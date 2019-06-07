@@ -11,11 +11,15 @@ This is an overview on how to test the project.
 Install the required python modules in a virtual environment
 
 ```sh
-$ python -m pipenv install
+$ python -m pipenv install --dev
 ```
 
 ```sh
 $ python -m pipenv shell
+```
+
+```sh
+$ python setup.py install
 ```
 
 ## Code Style Test
