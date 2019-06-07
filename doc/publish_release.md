@@ -34,7 +34,7 @@ if not done yet, add the account to be used for publishing the project
 
 First make sure that your python package is up-to-date by installing it in your virtual env:
 ```sh
-$ python -m pipenv install
+$ python -m pipenv install --dev
 ```
 ```sh
 $ python -m pipenv shell
