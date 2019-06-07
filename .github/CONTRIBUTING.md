@@ -94,7 +94,7 @@ Setup pipenv to develop in a virtual environment
 $ pip install pipenv
 ```
 ```sh
-$ python -m pipenv install
+$ python -m pipenv install --dev
 ```
 
 And always run your development inside the pipenv shell
