@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "==4.4.1"
+pytest-cov = "==2.7.1"
+pytest-ordering = "==0.6"
+bumpversion = "*"
+flake8 = "*"
+autopep8 = "*"
+wheel = "*"
+twine = "*"
+
+[packages]
+jsonschema = "==3.0.1"
+jsonpickle = "==1.1"
+enum34 = "==1.1.6"
+urllib3 = "==1.25.2"
+websocket_client = "==0.56.0"
+
+[requires]
+python_version = "3.6"

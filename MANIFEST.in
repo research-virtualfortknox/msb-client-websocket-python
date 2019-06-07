@@ -1,0 +1,2 @@
+include msb_client/event_schema.json
+include msb_client/function_schema.json
