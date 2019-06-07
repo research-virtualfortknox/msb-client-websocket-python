@@ -7,6 +7,8 @@
 
 # MSB websocket client library for Python
 
+[![Build Status](https://travis-ci.org/research-virtualfortknox/msb-client-websocket-python.svg?branch=master)](https://travis-ci.org/research-virtualfortknox/msb-client-websocket-python)
+
 **Compatibility Matrix**
 
 Client version compatibility to MSB versions:
