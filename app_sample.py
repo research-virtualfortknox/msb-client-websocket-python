@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     # msb_url = 'wss://localhost:8084'
     # msb_url = 'ws://localhost:8085'
-    msb_url = 'ws://ws.msb.edu.virtualfortknox.de'
+    msb_url = 'ws://ws2.msb.edu.virtualfortknox.de'
 
     # enable debug log messages (default = disabled).
     myMsbClient.enableDebug(True)
