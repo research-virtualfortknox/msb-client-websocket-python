@@ -45,7 +45,7 @@ class MsbClient(websocket.WebSocketApp):
         """
 
         self.msb_url = ""
-        self._msb_url = ""
+        self.msb_url_with_wspath = ""
 
         # debugging
         self.debug = False
@@ -352,7 +352,7 @@ class MsbClient(websocket.WebSocketApp):
         if not (self.msb_url.startswith("ws://") or self.msb_url.startswith("wss://")):
             logging.error("WRONG MSB URL FORMAT: " + str(self.msb_url))
         if self.sockJsFraming:
-            self._msb_url = (
+            self.msb_url_with_wspath = (
                 self.msb_url
                 + "/websocket/data/"
                 + server_id
@@ -361,7 +361,7 @@ class MsbClient(websocket.WebSocketApp):
                 + "/websocket"
             )
         else:
-            self._msb_url = self.msb_url + "/websocket/data/websocket"
+            self.msb_url_with_wspath = self.msb_url + "/websocket/data/websocket"
 
     def connect(self, msb_url=None):
         """Connects the client to the MSB WebSocket interface.
@@ -375,7 +375,7 @@ class MsbClient(websocket.WebSocketApp):
         self._checkUrl(msb_url)
         # init the websocket app and register own listeners
         ws = websocket.WebSocketApp(
-            self._msb_url,
+            self.msb_url_with_wspath,
             on_message=self.on_message,
             on_error=self.on_error,
             on_close=self.on_close,
@@ -395,10 +395,15 @@ class MsbClient(websocket.WebSocketApp):
                                 "cert_reqs": ssl.CERT_NONE,
                                 "check_hostname": False,
                             },
+                            suppress_origin = True
                         )
                     else:
                         ws.run_forever(
-                            sslopt={"cert_reqs": ssl.CERT_NONE, "check_hostname": False}
+                            sslopt={
+                                "cert_reqs": ssl.CERT_NONE,
+                                "check_hostname": False,
+                            },
+                            suppress_origin = True
                         )
                 else:
                     if self.keepAlive:
