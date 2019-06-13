@@ -13,9 +13,9 @@ import os
 import re
 import logging
 import uuid
-import urllib3
 import time
 import json
+import requests
 
 from msb_client.ComplexDataFormat import ComplexDataFormat
 from msb_client.DataType import DataType
@@ -66,11 +66,22 @@ if customIp:
     )
     so_url = re.sub(r":\/\/(www[0-9]?\.)?(.[^/:]+)", "://" + str(customIp), so_url)
     flow_url = re.sub(r":\/\/(www[0-9]?\.)?(.[^/:]+)", "://" + str(customIp), flow_url)
+# replace broker url with env
+if "TESTENV_BROKER_URL" in os.environ:
+    broker_url = os.environ["TESTENV_BROKER_URL"]
+    broker_url = broker_url.rstrip("\n")
+    logging.info("Broker Url Env was set >" + str(broker_url) + "<")
+if "TESTENV_SO_URL" in os.environ:
+    so_url = os.environ["TESTENV_SO_URL"]
+    so_url = so_url.rstrip("\n")
+    logging.info("SO Url Env was set >" + str(so_url) + "<")
+if "TESTENV_FLOW_URL" in os.environ:
+    flow_url = os.environ["TESTENV_FLOW_URL"]
+    flow_url = flow_url.rstrip("\n")
+    logging.info("Flow Url Env was set >" + str(flow_url) + "<")
 
 myMsbClient = None
-http = urllib3.PoolManager()
 flow_json = None
-
 
 class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
 
@@ -78,21 +89,19 @@ class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
     def test_smartobjectmanagement_availability(self):
         logging.info("Smart Object URL: >" + so_url + "<")
 
-        http = urllib3.PoolManager()
-        req = http.request(
-            "GET", so_url + "/service/token/" + OWNER_UUID, timeout=TIMEOUT
+        response = requests.get(
+            so_url + "/service/token/" + OWNER_UUID, verify=False
         )
-        self.assertEqual(req.status, 201, "Can not reach smart-object-management")
+        self.assertEqual(response.status_code, 201, "Can not reach smart-object-management")
 
     @pytest.mark.run(order=2)
     def test_integrationflowmanagement_availability(self):
         logging.info("Flow URL: >" + str(flow_url) + "<")
 
-        http = urllib3.PoolManager()
-        req = http.request(
-            "GET", flow_url + "/integrationFlow/customer/" + OWNER_UUID, timeout=TIMEOUT
+        response = requests.get(
+            flow_url + "/integrationFlow/customer/" + OWNER_UUID, verify=False
         )
-        self.assertEqual(req.status, 200, "Can not reach integration-flow-management")
+        self.assertEqual(response.status_code, 200, "Can not reach integration-flow-management")
 
 
 class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
@@ -103,16 +112,15 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
         logging.info("Broker URL: >" + str(broker_url) + "<")
 
         # get valid verification token
-        req = http.request(
-            "GET", so_url + "/service/token/" + OWNER_UUID, timeout=TIMEOUT
+        response = requests.get(
+            so_url + "/service/token/" + OWNER_UUID, verify=False
         )
         self.assertEqual(
-            req.status,
+            response.status_code,
             201,
             "Can not get verification token from smart-object-management",
         )
-        response = req.data.decode("utf-8")
-        response_dict = json.loads(response)
+        response_dict = json.loads(response.text)
         self.assertTrue(
             "token" in response_dict, "Response doesn't contain token key"
         )
@@ -217,20 +225,18 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             logging.debug(flow_json)
 
             # create flow
-            req = http.request(
-                "POST",
+            response = requests.post(
                 flow_url + "/integrationFlow/create",
                 headers={
                     "Accept": "application/json",
                     "Content-Type": "application/json",
                 },
-                body=str(flow_json),
-                timeout=TIMEOUT,
+                data=str(flow_json),
+                verify=False
             )
-            response = req.data.decode("utf-8")
-            response_dict = json.loads(response)
+            response_dict = json.loads(response.text)
             self.assertEqual(
-                req.status, 201, str("Creating integration flow failed: " + response)
+                response.status_code, 201, str("Creating integration flow failed: " + str(response))
             )
             logging.debug(response_dict)
             global flowCreated
@@ -247,14 +253,12 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             # Test deploy integration flow
             #
             # deploy flow
-            req = http.request(
-                "PUT",
+            response = requests.put(
                 flow_url + "/integrationFlow/" + str(flow_id) + "/deploy",
-                timeout=TIMEOUT,
+                verify=False
             )
-            response = req.data.decode("utf-8")
             self.assertEqual(
-                req.status, 200, str("Deploying integration flow failed: " + response)
+                response.status_code, 200, str("Deploying integration flow failed: " + str(response))
             )
             global flowDeployed
             flowDeployed = True
@@ -301,16 +305,14 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             #
             # undeploy flow
             if flowDeployed:
-                req = http.request(
-                    "PUT",
+                response = requests.put(
                     flow_url + "/integrationFlow/" + str(flow_id) + "/undeploy",
-                    timeout=TIMEOUT,
+                    verify=False
                 )
-                response = req.data.decode("utf-8")
                 self.assertEqual(
-                    req.status,
+                    response.status_code,
                     200,
-                    str("Undeploying integration flow failed: " + response),
+                    str("Undeploying integration flow failed: " + str(response)),
                 )
 
                 time.sleep(WAITING_TIME)
@@ -320,17 +322,16 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             #
             # delete flow
             if flowCreated:
-                req = http.request(
-                    "DELETE",
+                response = requests.delete(
                     flow_url + "/integrationFlow/" + str(flow_id),
                     headers={
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                     },
-                    timeout=TIMEOUT,
+                    verify=False
                 )
                 self.assertEqual(
-                    req.status, 200, str("Deleting integration flow failed")
+                    response.status_code, 200, str("Deleting integration flow failed")
                 )
 
                 time.sleep(WAITING_TIME)
@@ -340,13 +341,12 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             #
             # delete smart object
             if soCreated:
-                req = http.request(
-                    "DELETE",
+                response = requests.delete(
                     so_url + "/smartobject/" + SO_UUID,
                     headers={"Content-Type": "application/json"},
-                    timeout=TIMEOUT,
+                    verify=False
                 )
-                self.assertEqual(req.status, 200, "Problem deleting smart object")
+                self.assertEqual(response.status_code, 200, "Problem deleting smart object")
 
                 time.sleep(WAITING_TIME)
 

@@ -51,7 +51,6 @@ setup(
         "jsonschema>=3.0.1",
         "jsonpickle>=0.9.6",
         "enum34>=1.1.6",
-        "urllib3>=1.22",
     ],
     zip_safe=False,
     license='Apache-2.0',

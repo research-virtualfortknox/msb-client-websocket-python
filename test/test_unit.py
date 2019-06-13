@@ -13,7 +13,6 @@ import os
 import re
 import logging
 import uuid
-import urllib3
 import time
 import json
 
