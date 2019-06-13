@@ -5,6 +5,7 @@ python:
 
 env:
   global:
+    - PYTHONWARNINGS="ignore:Unverified HTTPS request"
     - TESTENV_BROKER_URL=https://ws.15xr.msb.oss.cell.vfk.fraunhofer.de/
     - TESTENV_SO_URL=https://so.15xr.msb.oss.cell.vfk.fraunhofer.de/
     - TESTENV_FLOW_URL=https://flow.15xr.msb.oss.cell.vfk.fraunhofer.de/
@@ -15,7 +16,7 @@ install:
 
 script: 
   - 'pipenv run python setup.py install'
-  - 'pipenv run pytest -s --cov=msb_client  test/test_unit.py'
+  - 'pipenv run pytest -s --cov=msb_client'
   - 'pipenv run python setup.py sdist bdist_wheel'
 
 deploy:
