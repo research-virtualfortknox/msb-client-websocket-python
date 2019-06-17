@@ -9,8 +9,11 @@ See the file "LICENSE" for the full license governing this code.
 import datetime
 
 import pytest
+import os
+import re
 import logging
 import uuid
+import time
 import json
 
 from msb_client.ComplexDataFormat import ComplexDataFormat
@@ -173,7 +176,7 @@ class TestMSBClientConfigurationParameters(unittest.TestCase):
         myMsbClient.addConfigParameter(param_name_8, param_value_8, param_datatype_8)
         try:
             myMsbClient.addConfigParameter(param_name_9, param_value_9, param_datatype_9)
-        except Exception:
+        except Exception as error:
             errorOnInvalidDatatype = True
 
         # 3. ASSERT
@@ -235,7 +238,7 @@ class TestMSBClientConfigurationParameters(unittest.TestCase):
         self.assertEqual(myMsbClient.getConfigParameter(param_name_4), param_value_4)
         try:
             myMsbClient.getConfigParameter("InvalidKey")
-        except Exception:
+        except Exception as error:
             errorOnInvalidKey = True
         self.assertEqual(errorOnInvalidKey, True)
 
@@ -661,7 +664,7 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
                 isArray,
                 responseEvents,
             )
-        except Exception:
+        except Exception as error:
             errorOnDuplicateFunction = True
 
         # 3. ASSERT

@@ -6,6 +6,7 @@ Authors: Daniel Stock, Matthias Stoehr
 Licensed under the Apache License, Version 2.0
 See the file "LICENSE" for the full license governing this code.
 """
+import datetime
 import threading
 import uuid
 
@@ -21,7 +22,7 @@ if __name__ == "__main__":
     SERVICE_TYPE = "SmartObject"
     SO_UUID = str(uuid.uuid1())
     SO_NAME = "MSBClientPythonAppSample" + SO_UUID[-6:]
-    SO_DESCRIPTION = "MSBClientPythonAppSample description"
+    SO_DESCRIPTION = "MSBClientPythonAppSample description"  
     SO_TOKEN = SO_UUID[-6:]
     myMsbClient = MsbClient(
         SERVICE_TYPE,
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     # set the reconnect interval time in ms (default = 10000 ms).
     myMsbClient.setReconnectInterval(10000)
 
-    # enable or disable the message buffer,
+    # enable or disable the message buffer, 
     # which will buffer sent event messages when no active connection is available (default = enabled).
     myMsbClient.disableEventCache(False)
 
@@ -61,7 +62,7 @@ if __name__ == "__main__":
     myMsbClient.setEventCacheSize(1000)
 
     # disable SSL hostname check and certificate validation for self signed certificates (default = enabled).
-    myMsbClient.disableHostnameVerification(True)
+    myMsbClient.disableHostnameVerification(True)  
 
     # add a configuration parameter to the self description.
     # configuration parameters are published to the MSB and can be changed from the MSB GUI in real time

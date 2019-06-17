@@ -19,7 +19,6 @@ from .DataType import DataType, convertDataType
 
 class Event:
     """Definition of events to be send via the MSB."""
-
     def __init__(
         self,
         eventId,
@@ -45,12 +44,12 @@ class Event:
         self.priority = priority
         self.isArray = isArray
         if (
-            isinstance(event_dataFormat, DataFormat)
+            isinstance(event_dataFormat, DataFormat) 
             or isinstance(event_dataFormat, ComplexDataFormat)
         ):
             # make a deep copy of the root dataformat
             self.dataFormat = copy.deepcopy(event_dataFormat).getDataFormat()
-            # and add all nested data formats
+            # and add all nested data formats 
             for df_key in list(event_dataFormat.nested_cdf.keys()):
                 if df_key not in self.dataFormat:
                     self.dataFormat[df_key] = event_dataFormat.nested_cdf[df_key].dataFormat[df_key]

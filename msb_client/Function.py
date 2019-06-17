@@ -17,7 +17,6 @@ import datetime
 
 class Function:
     """Definition of functions to be provided via the MSB."""
-
     def __init__(
         self,
         functionId,
@@ -49,7 +48,7 @@ class Function:
         else:
             self.responseEvents = responseEvents
         if (
-            isinstance(function_dataformat, DataFormat)
+            isinstance(function_dataformat, DataFormat) 
             or isinstance(function_dataformat, ComplexDataFormat)
         ):
             # make a deep copy of the root dataformat

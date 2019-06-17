@@ -83,7 +83,6 @@ if "TESTENV_FLOW_URL" in os.environ:
 myMsbClient = None
 flow_json = None
 
-
 class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
 
     @pytest.mark.run(order=1)

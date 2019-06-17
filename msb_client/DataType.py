@@ -33,13 +33,13 @@ def getDataType(format):
     """
     dataType = {}
     if (
-        format == "string"
-        or format == DataType.STRING
+        format == "string" 
+        or format == DataType.STRING 
         or format == str
     ):
         dataType["type"] = "string"
     elif (
-        format == "int32"
+        format == "int32" 
         or format == DataType.INT32
     ):
         dataType["type"] = "integer"
@@ -53,7 +53,7 @@ def getDataType(format):
         dataType["type"] = "integer"
         dataType["format"] = "int64"
     elif (
-        format == "float"
+        format == "float" 
         or format == DataType.FLOAT
     ):
         dataType["type"] = "number"
@@ -75,13 +75,13 @@ def getDataType(format):
         dataType["type"] = "string"
         dataType["format"] = "date-time"
     elif (
-        format == "boolean"
-        or format == DataType.BOOLEAN
+        format == "boolean" 
+        or format == DataType.BOOLEAN 
         or format == bool
     ):
         dataType["type"] = "boolean"
     elif (
-        format == "byte"
+        format == "byte" 
         or format == DataType.BYTE
     ):
         dataType["type"] = "string"

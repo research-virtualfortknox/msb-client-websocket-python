@@ -12,7 +12,6 @@ from msb_client.DataType import getDataType
 
 class DataFormat:
     """Manages the definition of simple dataformats."""
-
     def __init__(self, dataType=None, isArray=None):
         """Initializes a new simple dataformat.
 
