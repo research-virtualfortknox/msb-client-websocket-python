@@ -547,6 +547,43 @@ def setup_msbclient(verification_token):
         True,
     )
 
+    # the final data format can be provided as a valid JSON object
+    myMsbClient.addEvent(
+        "COMPLEX_JSON_EVENT",
+        "JSON based event",
+        "JSON based event description",
+        {
+            "Member" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "status" : {
+                        "enum" : [ "present", "absent" ],
+                        "type" : "string"
+                    }
+                }
+            },
+            "Team" : {
+                "type" : "object",
+                "properties" : {
+                    "staff" : {
+                        "type" : "array",
+                        "items" : {
+                            "$ref" : "#/definitions/Member"
+                        }
+                    }
+                }
+            },
+            "dataObject" : {
+                "$ref" : "#/definitions/Team"
+            }
+        },
+        0,
+        False,
+    )
+
     logging.debug("Self Description - added complex events")
 
     # define the function which will be passed to the function description
@@ -575,6 +612,44 @@ def setup_msbclient(verification_token):
         ["EVENT1", "EVENT2"],
     )
     myMsbClient.addFunction(function2)
+
+    # the final data format can be provided as a valid JSON object
+    myMsbClient.addFunction(
+        "COMPLEX_JSON_FUNCTION",
+        "Function JSON based",
+        "Description function JSON based",
+        {
+            "Member" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "status" : {
+                        "enum" : [ "present", "absent" ],
+                        "type" : "string"
+                    }
+                }
+            },
+            "Team" : {
+                "type" : "object",
+                "properties" : {
+                    "staff" : {
+                        "type" : "array",
+                        "items" : {
+                            "$ref" : "#/definitions/Member"
+                        }
+                    }
+                }
+            },
+            "dataObject" : {
+                "$ref" : "#/definitions/Team"
+            }
+        },
+        printMsg,
+        False,
+        ["EVENT1", "EVENT2"],
+    )
 
     # define the function which will be passed to the function description
     def arrayfun_implementation(msg):

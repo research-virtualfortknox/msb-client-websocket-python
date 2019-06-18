@@ -163,6 +163,53 @@ myMsbClient.addEvent(
 )
 ```
 
+### Alternative 3: Complex event creation sample (using json object):
+
+```python
+event_id = "E3"
+event_name = "EVENT " + event_id
+event_description = "EVENT Description " + event_id
+event_priority = 1 # 0 (LOW), 1 (MEDIUM), 2 (HIGH)
+isArray = False # just one value or array of it?
+
+# add the event (with the MSB-ready json object)
+myMsbClient.addEvent(
+    event_id,
+    event_name,
+    event_description,
+    {
+        "Team" : {
+            "type" : "object",
+            "properties" : {
+                "staff" : {
+                    "type" : "array",
+                    "items" : {
+                        "$ref" : "#/definitions/Member"
+                    }
+                }
+            }
+        },
+        "Member" : {
+            "type" : "object",
+            "properties" : {
+                "name" : {
+                    "type" : "string"
+                },
+                "status" : {
+                    "enum" : [ "present", "absent" ],
+                    "type" : "string"
+                }
+            }
+        },
+        "dataObject" : {
+            "$ref" : "#/definitions/Team"
+        }
+    },
+    event_priority,
+    isArray,
+)
+```
+
 See `app_sample.py` for more event creation examples.
 
 ## Add Functions
@@ -226,6 +273,67 @@ myMsbClient.addFunction(
     function_name,
     function_description,
     myCar,
+    printMsg,
+    isArray,
+    responseEvents,
+)
+```
+
+### Alternative 3: Complex function creation sample (using json object):
+
+```python
+function_id = "F3"
+function_name = "FUNC " + function_id
+function_description = "FUNC Description " + function_id
+isArray = False # handle array of values or just one value?
+responseEvents = None # you can link to response events here by a list of event is e.g. ["E1"]
+
+# define the function which will be passed to the function description
+# this function implementation will be called
+def printMsg(msg):
+    print(str(msg["dataObject"]))
+
+# add the function
+myMsbClient.addFunction(
+    function_id,
+    function_name,
+    function_description,
+    {
+        "MyCar" : {
+            "type" : "object",
+            "properties" : {
+                "carColor" : {
+                    "type" : "string"
+                },
+                "carNrOfSeats" : {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "carWeight" : {
+                    "format": "float",
+                    "type": "number"
+                },
+                "wheels" : {
+                    "type" : "array",
+                    "items" : {
+                        "$ref" : "#/definitions/MyWheel"
+                    }
+                }
+            }
+        },
+        "MyWheel" : {
+            "type" : "object",
+            "properties" : {
+                "position" : {
+                    "enum" : [ "br", "bl", "fr", "fl" ],
+                    "type" : "string"
+                }
+            }
+        },
+        "dataObject" : {
+            "$ref" : "#/definitions/MyCar"
+        }
+    },
     printMsg,
     isArray,
     responseEvents,

@@ -66,7 +66,16 @@ class Event:
         else:
             # also support the definition of hte dattaformat as json object
             try:
-                json_object = {"dataObject": json.loads(event_dataFormat)}
+                # check is the dataformat already a valid json object
+                if "dataObject" in event_dataFormat:
+                    json_object = event_dataFormat
+                # otherwise check if it is a valid json string that can loaded as json object
+                else:
+                    json_object = json.loads(event_dataFormat)
+                    # check if it json specifies simple data format
+                    # otherwise it is a complex on and used without changes
+                    if "dataObject" not in json_object:
+                        json_object = {"dataObject": json_object}
                 self.dataFormat = json_object
             except Exception:
                 self.dataFormat = DataFormat(event_dataFormat, isArray).getDataFormat()

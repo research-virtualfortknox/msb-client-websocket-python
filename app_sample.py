@@ -115,12 +115,50 @@ if __name__ == "__main__":
         True,
     )
 
+    # the final data format can be provided as a valid JSON object
+    complex_json_event = Event(
+        "COMPLEX_JSON_EVENT",
+        "Manual event",
+        "Manual event description",
+        {
+            "Member" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "status" : {
+                        "enum" : [ "present", "absent" ],
+                        "type" : "string"
+                    }
+                }
+            },
+            "Team" : {
+                "type" : "object",
+                "properties" : {
+                    "staff" : {
+                        "type" : "array",
+                        "items" : {
+                            "$ref" : "#/definitions/Member"
+                        }
+                    }
+                }
+            },
+            "dataObject" : {
+                "$ref" : "#/definitions/Team"
+            }
+        },
+        0,
+        False,
+    )
+
     # add event objects to MSB client
     myMsbClient.addEvent(event1)
     myMsbClient.addEvent(event2)
     myMsbClient.addEvent(event3)
     myMsbClient.addEvent(response_event1)
     myMsbClient.addEvent(manual_event)
+    myMsbClient.addEvent(complex_json_event)
 
     # optionally, add an event directly in line
     myMsbClient.addEvent(
@@ -210,6 +248,44 @@ if __name__ == "__main__":
         "Print parameter",
         None,
         printParameter,
+        False,
+        ["EVENT1", "EVENT2"],
+    )
+
+    # the final data format can be provided as a valid JSON object
+    myMsbClient.addFunction(
+        "COMPLEX_JSON_FUNCTION",
+        "Function JSON based",
+        "Description function JSON based",
+        {
+            "Member" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "status" : {
+                        "enum" : [ "present", "absent" ],
+                        "type" : "string"
+                    }
+                }
+            },
+            "Team" : {
+                "type" : "object",
+                "properties" : {
+                    "staff" : {
+                        "type" : "array",
+                        "items" : {
+                            "$ref" : "#/definitions/Member"
+                        }
+                    }
+                }
+            },
+            "dataObject" : {
+                "$ref" : "#/definitions/Team"
+            }
+        },
+        printMsg,
         False,
         ["EVENT1", "EVENT2"],
     )

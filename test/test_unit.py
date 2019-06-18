@@ -855,6 +855,79 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
         self.assertEqual(myMsbClient.functions[function_id].dataFormat["dataObject"]
                          ["items"]["$ref"], "#/definitions/" + complexObject_name_1)
 
+    def test_addClientEventPerSingleParamsWithSelfDefinedComplexObjectAsJsonString(self):
+        # 1. ARRANGE
+        myMsbClient = MsbClient()
+
+        function_id = str(uuid.uuid4())[-6:]
+        function_name = "FUNC " + function_id
+        function_description = "FUNC Description " + function_id
+        isArray = False
+        responseEvents = []
+        
+        complexDataFormatAsJsonString = {
+            "Member" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "status" : {
+                        "enum" : [ "present", "absent" ],
+                        "type" : "string"
+                    }
+                }
+            },
+            "Team" : {
+                "type" : "object",
+                "properties" : {
+                    "staff" : {
+                        "type" : "array",
+                        "items" : {
+                            "$ref" : "#/definitions/Member"
+                        }
+                    }
+                }
+            },
+            "dataObject" : {
+                "$ref" : "#/definitions/Team"
+            }
+        }
+
+        # 2. ACT
+        myMsbClient.addFunction(
+            function_id,
+            function_name,
+            function_description,
+            complexDataFormatAsJsonString,
+            printMsg,
+            isArray,
+            responseEvents,
+        )
+
+        # 3. ASSERT
+        self.assertEqual(myMsbClient.functions[function_id].functionId, function_id)
+        self.assertEqual(myMsbClient.functions[function_id].name, function_name)
+        self.assertEqual(myMsbClient.functions[function_id].description, function_description)
+        self.assertEqual(myMsbClient.functions[function_id].isArray, isArray)
+        self.assertEqual(myMsbClient.functions[function_id].implementation, printMsg)
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["Team"]["type"], "object")
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["Team"]
+                         ["properties"]["staff"]["type"], "array")
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["Team"]
+                         ["properties"]["staff"]["items"]["$ref"],
+                         "#/definitions/" + "Member")
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["Member"]["type"], "object")
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["Member"]
+                         ["properties"]["name"]["type"], "string")
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["Member"]
+                         ["properties"]["status"]["type"],"string")
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["Member"]
+                         ["properties"]["status"]["enum"],[ "present", "absent" ])
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["dataObject"]["type"], "object")
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["dataObject"]
+                         ["$ref"], "#/definitions/" + "Team")
+
 
 class TestMSBClientCreateClientEvents(unittest.TestCase):
     """
@@ -1396,6 +1469,79 @@ class TestMSBClientCreateClientEvents(unittest.TestCase):
         self.assertEqual(myMsbClient.events[event_id].dataFormat["dataObject"]["type"], "object")
         self.assertEqual(myMsbClient.events[event_id].dataFormat["dataObject"]
                          ["$ref"], "#/definitions/" + complexObject_name_1)
+
+    def test_addClientEventPerSingleParamsWithSelfDefinedComplexObjectAsJsonString(self):
+        # 1. ARRANGE
+        myMsbClient = MsbClient()
+
+        event_id = str(uuid.uuid4())[-6:]
+        event_name = "EVENT " + event_id
+        event_description = "EVENT Description " + event_id
+        event_priority = 1
+        isArray = False
+        
+        complexDataFormatAsJsonString = {
+            "Member" : {
+                "type" : "object",
+                "properties" : {
+                    "name" : {
+                        "type" : "string"
+                    },
+                    "status" : {
+                        "enum" : [ "present", "absent" ],
+                        "type" : "string"
+                    }
+                }
+            },
+            "Team" : {
+                "type" : "object",
+                "properties" : {
+                    "staff" : {
+                        "type" : "array",
+                        "items" : {
+                            "$ref" : "#/definitions/Member"
+                        }
+                    }
+                }
+            },
+            "dataObject" : {
+                "$ref" : "#/definitions/Team"
+            }
+        }
+
+        # 2. ACT
+        myMsbClient.addEvent(
+            event_id,
+            event_name,
+            event_description,
+            complexDataFormatAsJsonString,
+            event_priority,
+            isArray,
+        )
+
+        # 3. ASSERT
+        logging.debug("\nEVENT JSON DataFormat" + str(myMsbClient.events[event_id].dataFormat))
+        self.assertEqual(myMsbClient.events[event_id].eventId, event_id)
+        self.assertEqual(myMsbClient.events[event_id].name, event_name)
+        self.assertEqual(myMsbClient.events[event_id].description, event_description)
+        self.assertEqual(myMsbClient.events[event_id].isArray, isArray)
+        self.assertEqual(myMsbClient.events[event_id].priority, event_priority)
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["Team"]["type"], "object")
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["Team"]
+                         ["properties"]["staff"]["type"], "array")
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["Team"]
+                         ["properties"]["staff"]["items"]["$ref"],
+                         "#/definitions/" + "Member")
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["Member"]["type"], "object")
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["Member"]
+                         ["properties"]["name"]["type"], "string")
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["Member"]
+                         ["properties"]["status"]["type"],"string")
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["Member"]
+                         ["properties"]["status"]["enum"],[ "present", "absent" ])
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["dataObject"]["type"], "object")
+        self.assertEqual(myMsbClient.events[event_id].dataFormat["dataObject"]
+                         ["$ref"], "#/definitions/" + "Team")
 
 
 class TestMSBClientCreateSelfDescription(unittest.TestCase):
