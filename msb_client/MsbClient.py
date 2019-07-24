@@ -814,7 +814,8 @@ class MsbClient(websocket.WebSocketApp):
             else:
                 del f["responseEvents"]
             del f["isArray"]
-            del f["implementation"]
+            if "implementation" in f:
+                del f["implementation"]
             if f["dataFormat"] is None:
                 del f["dataFormat"]
             _fu.append(f)

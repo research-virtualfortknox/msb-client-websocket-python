@@ -345,6 +345,40 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
         self.assertEqual(len(myMsbClient.functions[function_id].responseEvents), len(responseEvents))
         self.assertEqual(myMsbClient.functions[function_id].implementation, printMsg)
 
+    @pytest.mark.last
+    def test_addClientFunctionPerSingleParamNonStaticFunctionPointer(self):
+        # 1. ARRANGE
+        myInstance = myClass()
+        myMsbClient = MsbClient()
+
+        function_id = str(uuid.uuid4())[-6:]
+        function_name = "FUNC " + function_id
+        function_description = "FUNC Description " + function_id
+        function_dataformat = "string"
+        isArray = False
+        responseEvents = None
+
+        # 2. ACT
+        myMsbClient.addFunction(
+            function_id,
+            function_name,
+            function_description,
+            function_dataformat,
+            myInstance.myNonStaticPrintMethod,
+            isArray,
+            responseEvents,
+        )
+
+        # 3. ASSERT
+        print("NON STATIC METHOD: " + str(myMsbClient.getSelfDescription()))
+        self.assertEqual(myMsbClient.functions[function_id].functionId, function_id)
+        self.assertEqual(myMsbClient.functions[function_id].name, function_name)
+        self.assertEqual(myMsbClient.functions[function_id].description, function_description)
+        self.assertEqual(myMsbClient.functions[function_id].isArray, isArray)
+        self.assertEqual(myMsbClient.functions[function_id].dataFormat["dataObject"]["type"], function_dataformat)
+        self.assertEqual(len(myMsbClient.functions[function_id].responseEvents), 0)
+        self.assertEqual(myMsbClient.functions[function_id].implementation, myInstance.myNonStaticMethod)
+
     def test_addClientFunctionPerSingleParamWithJsonString(self):
         # 1. ARRANGE
         myMsbClient = MsbClient()
@@ -2573,3 +2607,7 @@ class TestMSBClientEventCaching(unittest.TestCase):
 
 def printMsg(msg):
     print(str(msg))
+
+class myClass():
+    def myNonStaticPrintMethod(self,msg):
+        print(str(msg))

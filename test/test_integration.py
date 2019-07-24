@@ -651,23 +651,7 @@ def setup_msbclient(verification_token):
         ["EVENT1", "EVENT2"],
     )
 
-    # define the function which will be passed to the function description
-    def arrayfun_implementation(msg):
-        logging.debug("Array Function has been called, message: " + str(msg["a"]))
-        global receivedArrayEvIndexCheck
-        receivedArrayEvIndexCheck = True
-        receivedArrayEvIndexCheck = str(msg["a"][0]) == "Hello"
-        receivedArrayEvIndexCheck = str(msg["a"][1]) == "World"
-        receivedArrayEvIndexCheck = str(msg["a"][2]) == "!"
-        logging.debug(
-            "Array Function has been called, correlationId: " + msg["correlationId"]
-        )
-        global receivedArrayEvWithCorrectCorrelationId
-        receivedArrayEvWithCorrectCorrelationId = (
-            str(msg["correlationId"]) == CORRELATIOON_ID_FOR_TEST
-        )
-        global receivedArrayEv
-        receivedArrayEv = True
+    # myInstance = myClass()
 
     # add the function to be tested in integration flow
     function_arrayfun = Function(
@@ -676,9 +660,32 @@ def setup_msbclient(verification_token):
         "Array Function for testing",
         str,
         arrayfun_implementation,
+        #myInstance.myNonStatic_arrayfun_implementation,
         True,
         None,
     )
     myMsbClient.addFunction(function_arrayfun)
 
     logging.debug("Self Description - added functions")
+
+# define the function which will be passed to the function description
+def arrayfun_implementation(msg):
+    logging.debug("Array Function has been called, message: " + str(msg["a"]))
+    global receivedArrayEvIndexCheck
+    receivedArrayEvIndexCheck = True
+    receivedArrayEvIndexCheck = str(msg["a"][0]) == "Hello"
+    receivedArrayEvIndexCheck = str(msg["a"][1]) == "World"
+    receivedArrayEvIndexCheck = str(msg["a"][2]) == "!"
+    logging.debug(
+        "Array Function has been called, correlationId: " + msg["correlationId"]
+    )
+    global receivedArrayEvWithCorrectCorrelationId
+    receivedArrayEvWithCorrectCorrelationId = (
+        str(msg["correlationId"]) == CORRELATIOON_ID_FOR_TEST
+    )
+    global receivedArrayEv
+    receivedArrayEv = True
+
+class myClass():
+    def myNonStatic_arrayfun_implementation(self,msg):
+        arrayfun_implementation(msg)
