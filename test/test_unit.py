@@ -377,7 +377,7 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
         self.assertEqual(myMsbClient.functions[function_id].isArray, isArray)
         self.assertEqual(myMsbClient.functions[function_id].dataFormat["dataObject"]["type"], function_dataformat)
         self.assertEqual(len(myMsbClient.functions[function_id].responseEvents), 0)
-        self.assertEqual(myMsbClient.functions[function_id].implementation, myInstance.myNonStaticMethod)
+        self.assertEqual(myMsbClient.functions[function_id].implementation, myInstance.myNonStaticPrintMethod)
 
     def test_addClientFunctionPerSingleParamWithJsonString(self):
         # 1. ARRANGE
