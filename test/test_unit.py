@@ -57,6 +57,18 @@ class TestMSBClientBasicInitialization(unittest.TestCase):
         self.assertIsNotNone(myMsbClient.description)
         self.assertIsNotNone(myMsbClient.token)
 
+    def test_getClientParametersFromApplicationPropertiesFileWithCustomPath(self):
+        # 1. ARRANGE
+        # 2. ACT
+        myMsbClient = MsbClient(applicationPropertiesCustomPath="./test/application-test.properties")
+        # 3. ASSERT
+        self.assertIsNotNone(myMsbClient.service_type)
+        self.assertIsNotNone(myMsbClient.uuid)
+        self.assertIsNotNone(myMsbClient.name)
+        self.assertEqual(myMsbClient.name, "PythonTest Custom Path")
+        self.assertIsNotNone(myMsbClient.description)
+        self.assertIsNotNone(myMsbClient.token)
+
     def test_getClientParametersIfSetViaConstructor(self):
         # 1. ARRANGE
         # 2. ACT

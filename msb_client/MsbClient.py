@@ -27,7 +27,8 @@ class MsbClient(websocket.WebSocketApp):
         uuid=None, 
         name=None, 
         description=None, 
-        token=None
+        token=None,
+        applicationPropertiesCustomPath=None
     ):
         """Initializes a new msb client.
 
@@ -46,6 +47,7 @@ class MsbClient(websocket.WebSocketApp):
 
         self.msb_url = ""
         self.msb_url_with_wspath = ""
+        self.applicationPropertiesCustomPath = applicationPropertiesCustomPath
 
         # debugging
         self.debug = False
@@ -826,21 +828,26 @@ class MsbClient(websocket.WebSocketApp):
     def readConfig(self):
         """Helper function to parse main configuration param by param name from the application.properties file"""  
         logging.info("Reading configuration from application.properties file")
-        config = open("application.properties", "r")
-        for line in config:
-            configparam = line.split("=")
-            if configparam[0] == "msb.type":
-                self.service_type = configparam[1].rstrip()
-            elif configparam[0] == "msb.name":
-                self.name = configparam[1].rstrip()
-            elif configparam[0] == "msb.uuid":
-                self.uuid = configparam[1].rstrip()
-            elif configparam[0] == "msb.token":
-                self.token = configparam[1].rstrip()
-            elif configparam[0] == "msb.url":
-                self.msb_url = configparam[1].rstrip()
-            elif configparam[0] == "msb.description":
-                self.description = configparam[1].rstrip()
+        config = None
+        if self.applicationPropertiesCustomPath is None:
+            config = open("application.properties", "r")
+        else:
+            config = open(str(self.applicationPropertiesCustomPath), "r")
+        if config is not None:
+            for line in config:
+                configparam = line.split("=")
+                if configparam[0] == "msb.type":
+                    self.service_type = configparam[1].rstrip()
+                elif configparam[0] == "msb.name":
+                    self.name = configparam[1].rstrip()
+                elif configparam[0] == "msb.uuid":
+                    self.uuid = configparam[1].rstrip()
+                elif configparam[0] == "msb.token":
+                    self.token = configparam[1].rstrip()
+                elif configparam[0] == "msb.url":
+                    self.msb_url = configparam[1].rstrip()
+                elif configparam[0] == "msb.description":
+                    self.description = configparam[1].rstrip()
 
 
 def vadilateEventDataFormat(df):
