@@ -86,6 +86,12 @@ When initializing your msb client instance, the `application.properties` file wi
 myMsbClient = MsbClient()
 ```
 
+You can also set a custom path to the `application.properties` file.
+
+```python
+myMsbClient = MsbClient(applicationPropertiesCustomPath="./your/path/to/application.properties")
+```
+
 ### Alternative 2 - By constructor
 
 If you do not provide an application.properties file, use the constructor
