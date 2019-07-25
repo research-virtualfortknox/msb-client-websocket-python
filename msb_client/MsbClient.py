@@ -18,15 +18,16 @@ from .DataFormat import getDataType
 
 
 class MsbClient(websocket.WebSocketApp):
-    """Definition of the msb client to handle the creation of the self-description 
-    and communication with the msb websocket interface.
+    """Definition of the msb client to handle the creation of the self-description
+     and communication with the msb websocket interface.
     """
+
     def __init__(
-        self, 
-        service_type=None, 
-        uuid=None, 
-        name=None, 
-        description=None, 
+        self,
+        service_type=None,
+        uuid=None,
+        name=None,
+        description=None,
         token=None,
         applicationPropertiesCustomPath=None
     ):
@@ -250,10 +251,10 @@ class MsbClient(websocket.WebSocketApp):
             trace (bool): Used to either enable (true) or disable (false) websocket trace
         """
         websocket.enableTrace(trace)
-    
+
     def enableDataFormatValidation(self, dataFormatValidation=True):
         """Enables or disables data format and message format validation.
-        
+
         (Mainly for development, can be disabled in production to improve performance)
 
         Args:
@@ -397,7 +398,7 @@ class MsbClient(websocket.WebSocketApp):
                                 "cert_reqs": ssl.CERT_NONE,
                                 "check_hostname": False,
                             },
-                            suppress_origin = True
+                            suppress_origin=True
                         )
                     else:
                         ws.run_forever(
@@ -405,7 +406,7 @@ class MsbClient(websocket.WebSocketApp):
                                 "cert_reqs": ssl.CERT_NONE,
                                 "check_hostname": False,
                             },
-                            suppress_origin = True
+                            suppress_origin=True
                         )
                 else:
                     if self.keepAlive:
@@ -495,7 +496,7 @@ class MsbClient(websocket.WebSocketApp):
                         "$ref"
                     ] = event.dataFormat["dataObject"]["$ref"]
                     del event.dataFormat["dataObject"]["$ref"]
-             # if not an array of complex objects, change dataformat to type object
+            # if not an array of complex objects, change dataformat to type object
             elif not event.isArray:
                 if "$ref" in event.dataFormat["dataObject"]:
                     event.dataFormat["dataObject"]["type"] = "object"
@@ -826,7 +827,7 @@ class MsbClient(websocket.WebSocketApp):
         return self_description
 
     def readConfig(self):
-        """Helper function to parse main configuration param by param name from the application.properties file"""  
+        """Helper function to parse main configuration param by param name from the application.properties file"""
         logging.info("Reading configuration from application.properties file")
         config = None
         if self.applicationPropertiesCustomPath is None:

@@ -12,6 +12,7 @@ from .DataType import getDataType
 
 class ComplexDataFormat:
     """Manages the definition of self-defined (nested) complex dataformats."""
+
     def __init__(self, objectName):
         """Initializes a new complex dataformat.
 
@@ -69,7 +70,7 @@ class ComplexDataFormat:
                         "$ref"
                     ] = ("#/definitions/" + dataType.objectName)
                     self.dataFormat[dataType.objectName] = dt
-                
+
         else:
             dt = getDataType(dataType)
             if isArray:

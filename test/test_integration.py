@@ -83,6 +83,7 @@ if "TESTENV_FLOW_URL" in os.environ:
 myMsbClient = None
 flow_json = None
 
+
 class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
 
     @pytest.mark.run(order=1)
@@ -553,31 +554,31 @@ def setup_msbclient(verification_token):
         "JSON based event",
         "JSON based event description",
         {
-            "Member" : {
-                "type" : "object",
-                "properties" : {
-                    "name" : {
-                        "type" : "string"
+            "Member": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
                     },
-                    "status" : {
-                        "enum" : [ "present", "absent" ],
-                        "type" : "string"
+                    "status": {
+                        "enum": ["present", "absent"],
+                        "type": "string"
                     }
                 }
             },
-            "Team" : {
-                "type" : "object",
-                "properties" : {
-                    "staff" : {
-                        "type" : "array",
-                        "items" : {
-                            "$ref" : "#/definitions/Member"
+            "Team": {
+                "type": "object",
+                "properties": {
+                    "staff": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
             },
-            "dataObject" : {
-                "$ref" : "#/definitions/Team"
+            "dataObject": {
+                "$ref": "#/definitions/Team"
             }
         },
         0,
@@ -619,31 +620,31 @@ def setup_msbclient(verification_token):
         "Function JSON based",
         "Description function JSON based",
         {
-            "Member" : {
-                "type" : "object",
-                "properties" : {
-                    "name" : {
-                        "type" : "string"
+            "Member": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
                     },
-                    "status" : {
-                        "enum" : [ "present", "absent" ],
-                        "type" : "string"
+                    "status": {
+                        "enum": ["present", "absent"],
+                        "type": "string"
                     }
                 }
             },
-            "Team" : {
-                "type" : "object",
-                "properties" : {
-                    "staff" : {
-                        "type" : "array",
-                        "items" : {
-                            "$ref" : "#/definitions/Member"
+            "Team": {
+                "type": "object",
+                "properties": {
+                    "staff": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
             },
-            "dataObject" : {
-                "$ref" : "#/definitions/Team"
+            "dataObject": {
+                "$ref": "#/definitions/Team"
             }
         },
         printMsg,
@@ -660,7 +661,7 @@ def setup_msbclient(verification_token):
         "Array Function for testing",
         str,
         arrayfun_implementation,
-        #myInstance.myNonStatic_arrayfun_implementation,
+        # myInstance.myNonStatic_arrayfun_implementation,
         True,
         None,
     )
@@ -669,6 +670,8 @@ def setup_msbclient(verification_token):
     logging.debug("Self Description - added functions")
 
 # define the function which will be passed to the function description
+
+
 def arrayfun_implementation(msg):
     logging.debug("Array Function has been called, message: " + str(msg["a"]))
     global receivedArrayEvIndexCheck
@@ -686,6 +689,7 @@ def arrayfun_implementation(msg):
     global receivedArrayEv
     receivedArrayEv = True
 
+
 class myClass():
-    def myNonStatic_arrayfun_implementation(self,msg):
+    def myNonStatic_arrayfun_implementation(self, msg):
         arrayfun_implementation(msg)

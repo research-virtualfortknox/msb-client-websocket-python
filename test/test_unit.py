@@ -9,11 +9,8 @@ See the file "LICENSE" for the full license governing this code.
 import datetime
 
 import pytest
-import os
-import re
 import logging
 import uuid
-import time
 import json
 
 from msb_client.ComplexDataFormat import ComplexDataFormat
@@ -188,7 +185,7 @@ class TestMSBClientConfigurationParameters(unittest.TestCase):
         myMsbClient.addConfigParameter(param_name_8, param_value_8, param_datatype_8)
         try:
             myMsbClient.addConfigParameter(param_name_9, param_value_9, param_datatype_9)
-        except Exception as error:
+        except Exception:
             errorOnInvalidDatatype = True
 
         # 3. ASSERT
@@ -250,7 +247,7 @@ class TestMSBClientConfigurationParameters(unittest.TestCase):
         self.assertEqual(myMsbClient.getConfigParameter(param_name_4), param_value_4)
         try:
             myMsbClient.getConfigParameter("InvalidKey")
-        except Exception as error:
+        except Exception:
             errorOnInvalidKey = True
         self.assertEqual(errorOnInvalidKey, True)
 
@@ -710,7 +707,7 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
                 isArray,
                 responseEvents,
             )
-        except Exception as error:
+        except Exception:
             errorOnDuplicateFunction = True
 
         # 3. ASSERT
@@ -910,33 +907,33 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
         function_description = "FUNC Description " + function_id
         isArray = False
         responseEvents = []
-        
+
         complexDataFormatAsJsonString = {
-            "Member" : {
-                "type" : "object",
-                "properties" : {
-                    "name" : {
-                        "type" : "string"
+            "Member": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
                     },
-                    "status" : {
-                        "enum" : [ "present", "absent" ],
-                        "type" : "string"
+                    "status": {
+                        "enum": ["present", "absent"],
+                        "type": "string"
                     }
                 }
             },
-            "Team" : {
-                "type" : "object",
-                "properties" : {
-                    "staff" : {
-                        "type" : "array",
-                        "items" : {
-                            "$ref" : "#/definitions/Member"
+            "Team": {
+                "type": "object",
+                "properties": {
+                    "staff": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
             },
-            "dataObject" : {
-                "$ref" : "#/definitions/Team"
+            "dataObject": {
+                "$ref": "#/definitions/Team"
             }
         }
 
@@ -967,9 +964,9 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
         self.assertEqual(myMsbClient.functions[function_id].dataFormat["Member"]
                          ["properties"]["name"]["type"], "string")
         self.assertEqual(myMsbClient.functions[function_id].dataFormat["Member"]
-                         ["properties"]["status"]["type"],"string")
+                         ["properties"]["status"]["type"], "string")
         self.assertEqual(myMsbClient.functions[function_id].dataFormat["Member"]
-                         ["properties"]["status"]["enum"],[ "present", "absent" ])
+                         ["properties"]["status"]["enum"], ["present", "absent"])
         self.assertEqual(myMsbClient.functions[function_id].dataFormat["dataObject"]["type"], "object")
         self.assertEqual(myMsbClient.functions[function_id].dataFormat["dataObject"]
                          ["$ref"], "#/definitions/" + "Team")
@@ -1525,33 +1522,33 @@ class TestMSBClientCreateClientEvents(unittest.TestCase):
         event_description = "EVENT Description " + event_id
         event_priority = 1
         isArray = False
-        
+
         complexDataFormatAsJsonString = {
-            "Member" : {
-                "type" : "object",
-                "properties" : {
-                    "name" : {
-                        "type" : "string"
+            "Member": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
                     },
-                    "status" : {
-                        "enum" : [ "present", "absent" ],
-                        "type" : "string"
+                    "status": {
+                        "enum": ["present", "absent"],
+                        "type": "string"
                     }
                 }
             },
-            "Team" : {
-                "type" : "object",
-                "properties" : {
-                    "staff" : {
-                        "type" : "array",
-                        "items" : {
-                            "$ref" : "#/definitions/Member"
+            "Team": {
+                "type": "object",
+                "properties": {
+                    "staff": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/Member"
                         }
                     }
                 }
             },
-            "dataObject" : {
-                "$ref" : "#/definitions/Team"
+            "dataObject": {
+                "$ref": "#/definitions/Team"
             }
         }
 
@@ -1582,9 +1579,9 @@ class TestMSBClientCreateClientEvents(unittest.TestCase):
         self.assertEqual(myMsbClient.events[event_id].dataFormat["Member"]
                          ["properties"]["name"]["type"], "string")
         self.assertEqual(myMsbClient.events[event_id].dataFormat["Member"]
-                         ["properties"]["status"]["type"],"string")
+                         ["properties"]["status"]["type"], "string")
         self.assertEqual(myMsbClient.events[event_id].dataFormat["Member"]
-                         ["properties"]["status"]["enum"],[ "present", "absent" ])
+                         ["properties"]["status"]["enum"], ["present", "absent"])
         self.assertEqual(myMsbClient.events[event_id].dataFormat["dataObject"]["type"], "object")
         self.assertEqual(myMsbClient.events[event_id].dataFormat["dataObject"]
                          ["$ref"], "#/definitions/" + "Team")
@@ -2620,6 +2617,7 @@ class TestMSBClientEventCaching(unittest.TestCase):
 def printMsg(msg):
     print(str(msg))
 
+
 class myClass():
-    def myNonStaticPrintMethod(self,msg):
+    def myNonStaticPrintMethod(self, msg):
         print(str(msg))
