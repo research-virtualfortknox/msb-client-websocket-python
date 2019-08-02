@@ -188,7 +188,10 @@ class MsbClient(websocket.WebSocketApp):
                 ].startswith("//"):
                     jmsg["functionId"] = jmsg["functionId"][1:]
             if jmsg["functionId"] in self.functions:
-                jmsg["functionParameters"]["correlationId"] = jmsg["correlationId"]
+                if "correlationId" in jmsg:
+                    jmsg["functionParameters"]["correlationId"] = jmsg["correlationId"]
+                else:
+                    logging.debug("correlationid could not be found. Does the websocket interface version support it?")
                 self.functions[jmsg["functionId"]].implementation(
                     jmsg["functionParameters"]
                 )
