@@ -211,8 +211,11 @@ class MsbClient(websocket.WebSocketApp):
     def on_error(self, error):
         logging.error(error)
 
-    def on_close(self):
+    def on_close(self, code, reason):
         logging.debug("DISCONNECTED")
+        if self.trace:
+            logging.debug("Close Status Code: " + str(code))
+            logging.debug("Close Status Reason: " + str(reason))
         self.connected = False
         self.registered = False
         if self.autoReconnect and not self.userDisconnect:
@@ -253,6 +256,7 @@ class MsbClient(websocket.WebSocketApp):
         Args:
             trace (bool): Used to either enable (true) or disable (false) websocket trace
         """
+        self.trace = trace
         websocket.enableTrace(trace)
 
     def enableDataFormatValidation(self, dataFormatValidation=True):
@@ -431,6 +435,7 @@ class MsbClient(websocket.WebSocketApp):
     def disconnect(self):
         """Disconnects the client from the MSB WebSocket interface."""
         self.userDisconnect = True
+        logging.debug("Disconnect requested by msb client api")
         self.ws.close()
 
     def register(self):
