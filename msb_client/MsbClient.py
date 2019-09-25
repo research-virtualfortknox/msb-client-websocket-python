@@ -616,7 +616,7 @@ class MsbClient(websocket.WebSocketApp):
             dataObject (:obj:): The value to be published
             priority (str, int): The priority of the event (LOW,MEDIUM,HIGH) or (0,1,2)
             cached (bool): Specifies wether this event will be added to cache if MSB is currently not reachable
-            postDate (datetime): the post date of the event (e.g. datetime.datetime.now())
+            postDate (datetime): the post date of the event (e.g. datetime.datetime.utcnow().isoformat()[:-3] + "Z")
             correlationId (str): The correlation id of the event used to idetify events in multi-step flows
         """
         event = {}
@@ -630,7 +630,7 @@ class MsbClient(websocket.WebSocketApp):
             self.events[eventId].priority = priority
         event["priority"] = self.events[eventId].priority
         if postDate is None:
-            event["postDate"] = datetime.datetime.now().isoformat()
+            event["postDate"] = datetime.datetime.utcnow().isoformat()[:-3] + "Z"
         if correlationId is not None:
             event["correlationId"] = correlationId
 

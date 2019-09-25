@@ -409,7 +409,7 @@ event_id = "E1"
 event_value = 'Hello World!'
 event_priority = 2
 event_isCached = True
-event_postDate = datetime.datetime.now()
+event_postDate = datetime.datetime.utcnow().isoformat()[:-3] + "Z"
 
 myMsbClient.publish(
   event_id, 
@@ -427,7 +427,7 @@ event_id = "E1"
 event_value = 'Hello World!'
 event_priority = 2
 event_isCached = True
-event_postDate = datetime.datetime.now()
+event_postDate = datetime.datetime.utcnow().isoformat()[:-3] + "Z"
 event_correlationId = "72047f33-a9ae-4aa5-b7ae-c1c4a2797cac"
 
 myMsbClient.publish(
@@ -446,7 +446,7 @@ For values based on complex data formats it will look like this:
 event_id = "E2"
 event_priority = 2
 event_isCached = True
-event_postDate = datetime.datetime.now()
+event_postDate = datetime.datetime.utcnow().isoformat()[:-3] + "Z"
 event_correlationId = "72047f33-a9ae-4aa5-b7ae-c1c4a2797cac"
 
 # pepare the complex ovbject based on a complex data format
