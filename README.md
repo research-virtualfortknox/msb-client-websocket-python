@@ -1,4 +1,3 @@
-
 <p align="center">
   <a href="https://research.virtualfortknox.de" target="_blank" rel="noopener noreferrer">
     <img src="https://research.virtualfortknox.de/static/cms/img/vfk_research_logo.png" alt="VFK Research Logo" height="70" >
@@ -9,6 +8,7 @@
 
 [![Build Status](https://travis-ci.org/research-virtualfortknox/msb-client-websocket-python.svg?branch=master)](https://travis-ci.org/research-virtualfortknox/msb-client-websocket-python)
 [![PyPI version](https://badge.fury.io/py/msb-client-websocket-python.svg)](https://badge.fury.io/py/msb-client-websocket-python)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fresearch-virtualfortknox%2Fmsb-client-websocket-python.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fresearch-virtualfortknox%2Fmsb-client-websocket-python?ref=badge_shield)
 
 **Compatibility Matrix**
 
@@ -580,3 +580,7 @@ It mgiht be also helpful to enable data format validation, to check if an event 
 ```python
 myMsbClient.enableDataFormatValidation(True)
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fresearch-virtualfortknox%2Fmsb-client-websocket-python.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fresearch-virtualfortknox%2Fmsb-client-websocket-python?ref=badge_large)
