@@ -115,6 +115,10 @@ def convertDataType(format):
     elif format == DataType.BOOLEAN:
         return bool
     elif format == DataType.BYTE:
+        """
+        Python 2.7 returns: <type 'str'>
+        Python 3 returns: <class 'bytes'>
+        """
         return bytes
     else:
         raise Exception("Unknown dataType: " + str(format))
