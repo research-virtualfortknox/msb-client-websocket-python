@@ -1754,16 +1754,27 @@ class TestMSBClientCreateSelfDescription(unittest.TestCase):
 
         # 3. ASSERT
         selfDescription = myMsbClient.getSelfDescription()
-        self.assertEqual(selfDescription["events"][0]["eventId"], event_1_id)
-        self.assertEqual(selfDescription["events"][0]["name"], event_1_name)
-        self.assertEqual(selfDescription["events"][0]["description"], event_1_description)
-        self.assertEqual(selfDescription["events"][0]["dataFormat"]["dataObject"]["type"], "array")
-        self.assertEqual(selfDescription["events"][0]["dataFormat"]["dataObject"]
+
+        """" 
+        Fails randomly because events list in selfDescription is list while events property of MsbClient is Dict
+        therefore first Element in list depends on alpabetical order of event ID than insertation sequence of events
+        
+        Therefore read events with following command than using selfDescription["events"][X]
+        """
+
+        selfDesc_event1 = next((event for event in selfDescription["events"] if event["eventId"] == event_1_id), None)
+        selfDesc_event2 = next((event for event in selfDescription["events"] if event["eventId"] == event_2_id), None)
+
+        self.assertEqual(selfDesc_event1["eventId"], event_1_id)
+        self.assertEqual(selfDesc_event1["name"], event_1_name)
+        self.assertEqual(selfDesc_event1["description"], event_1_description)
+        self.assertEqual(selfDesc_event1["dataFormat"]["dataObject"]["type"], "array")
+        self.assertEqual(selfDesc_event1["dataFormat"]["dataObject"]
                          ["items"]["type"], "integer")
-        self.assertEqual(selfDescription["events"][1]["eventId"], event_2_id)
-        self.assertEqual(selfDescription["events"][1]["name"], event_2_name)
-        self.assertEqual(selfDescription["events"][1]["description"], event_2_description)
-        self.assertNotIn(selfDescription["events"][1], ["dataFormat"])
+        self.assertEqual(selfDesc_event2["eventId"], event_2_id)
+        self.assertEqual(selfDesc_event2["name"], event_2_name)
+        self.assertEqual(selfDesc_event2["description"], event_2_description)
+        self.assertNotIn(selfDesc_event2, ["dataFormat"])
 
 
 class TestMSBClientEventValueValidation(unittest.TestCase):
