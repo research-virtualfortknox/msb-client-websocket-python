@@ -8,6 +8,7 @@ See the file "LICENSE" for the full license governing this code.
 """
 
 import datetime
+
 from enum import Enum
 
 
@@ -116,8 +117,8 @@ def convertDataType(format):
         return bool
     elif format == DataType.BYTE:
         """
-        Python 2.7 returns: <type 'str'>
-        Python 3 returns: <class 'bytes'>
+        Python 2.7 with "return bytes" returns: <type 'str'>
+        Python 3   with "return bytes" returns: <class 'bytes'>
         """
         return bytes
     else:
