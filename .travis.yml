@@ -18,15 +18,25 @@ install:
 script: 
   - 'pipenv run python setup.py install'
   - 'pipenv run pytest -s --cov=msb_client'
-  - 'pipenv run python setup.py sdist bdist_wheel'
 
-deploy:
-  provider: pypi # deploys to pypi repo
-  user: 
-    secure: yQ7zF4dRh26CWW320NL7mNosWsoDN86XPmEaj6rdSnkcD6JaP7Z9VWly1GFjw5YbYKTOUBbcbKdcvCyokv53ti8NR+4HQAJIwtmwpWKaxS9LHOiatASGIk4JQbp7nIC3+PBmF0XkOheyGmeJIrogTJ4P/m8CHKe7kGtcB9YpJegMEQ9lqgvdFKLCzUgyTy9vvSNDtmrviEVKzxPpb9sXvGrINYNdQW5zFQXSOSv4ETWlm+PhCqM1P+iMRxplBB62NtyYK2HAvWMDD3yo5Tf8rxFgIjCHSOozHT1P0T4Dyw92AizjQ16l8PuSPHIY+X7NwBzItScP7rNiflAwklhpJ0KiFwQUAIFV32LcMGKqWMSyADwziTun7cnoL4wK6MzO22qWnCjD1R04Ba4piG6sF3F4RJN5uUMIn3vl8+uHs5NURmBoHrAjBYtdC8pLtkirBJydB4xaNPb3hCZZO4lXfS3zhVYiUL4hjAh6CFDCmeQlgaU+Wl1CJFwpv8JELrTkeU9E9bgVJKSe6IItFeUtJfYxPnS3HsIFldcuZxC5fBDA46M5sBs7c+/ibYDYACqPeDxJJW8ChLo6Y1y1j6kReRUG+k+ee7njyGKN+4BCEZc9wGNl16gQLe/BKPmMBpSRt4CQ/E5dGfosr+ZLWj7Dg4v2ZnUbmAP2mRk01v+1SGI=
-  password: # to be updated per travis repo
-    secure: REZxr4I6JYv2bdrxNn7Nn9rwmx7DouxBXXdnaQr9QW53kzhybkMtqjUzQc6r508m+2NsrWl9lKn4kgvOvnKnK2cqal2pRoXtG+xPKqKnTeVs8jbPvuurZfAsO4vGjSUgxgSvTHEqO//8pmcfTA5WgYZM1LwWYUQKO+kvDGJ7PnsZxrgyh2fKwWmjgdljkCPS0eNDXPVmaIu3ZqEbOVRxYi8YVoP/vzVfSxAY2Nt9XadrCLidMwAxhIsqKMUOCf/uDHHfr3CqjFvwzFk+Woxj7lAk5hZGVkU9aNT3CmryEwqxPjhlBITjlbF4KXV3XONPkX/Va4GcCMIr0t3qXvLYpQhp0thns9Tb3Mg1PsfSMK+LUgjjiBC45dTtbTW6LZxEMwn1+rg4LXK2IXuLYXp5WEepBsK+kSpgLRVSjRWVQq+gCru/fcSz8+VtqzviMPamNS4i4AKZM0aHL+yY93k3V4XhJdWPqZFmVLDpOWrRO9BzHj5BcXeJmLCFyc3XfnuIzaUF86aQeW4rle+aG8FHEGqAEhWNu76anXgxR74ts0U6Ztw6lxBZ2bsDA8sbwsWSwivC65umjYh5qHdP6EiZ3jmz8MhcZxOTvlRgoh+UjXkxlqYpDtRVKfIGEmrWjvGCG2iPMgEmL/buG6hnhfTdhAsrsvmW+jVx1XgJJziDQK8=
-  distributions: "sdist bdist_wheel" # what distributions to upload
-  on:
-    tags: true # only deploys if a git TAG exists for the commit
-    # branch: master # only deploys if branch is master
+jobs:
+  include:
+    - stage: deploy
+      python:
+        - '3.6'
+      install:
+        - 'pip install pipenv'
+        - 'pipenv install --ignore-pipfile --dev'
+      script: 
+        - 'pipenv run python setup.py install'
+        - 'pipenv run python setup.py sdist bdist_wheel'
+      deploy:
+        provider: pypi # deploys to pypi repo
+        user: 
+          secure: yQ7zF4dRh26CWW320NL7mNosWsoDN86XPmEaj6rdSnkcD6JaP7Z9VWly1GFjw5YbYKTOUBbcbKdcvCyokv53ti8NR+4HQAJIwtmwpWKaxS9LHOiatASGIk4JQbp7nIC3+PBmF0XkOheyGmeJIrogTJ4P/m8CHKe7kGtcB9YpJegMEQ9lqgvdFKLCzUgyTy9vvSNDtmrviEVKzxPpb9sXvGrINYNdQW5zFQXSOSv4ETWlm+PhCqM1P+iMRxplBB62NtyYK2HAvWMDD3yo5Tf8rxFgIjCHSOozHT1P0T4Dyw92AizjQ16l8PuSPHIY+X7NwBzItScP7rNiflAwklhpJ0KiFwQUAIFV32LcMGKqWMSyADwziTun7cnoL4wK6MzO22qWnCjD1R04Ba4piG6sF3F4RJN5uUMIn3vl8+uHs5NURmBoHrAjBYtdC8pLtkirBJydB4xaNPb3hCZZO4lXfS3zhVYiUL4hjAh6CFDCmeQlgaU+Wl1CJFwpv8JELrTkeU9E9bgVJKSe6IItFeUtJfYxPnS3HsIFldcuZxC5fBDA46M5sBs7c+/ibYDYACqPeDxJJW8ChLo6Y1y1j6kReRUG+k+ee7njyGKN+4BCEZc9wGNl16gQLe/BKPmMBpSRt4CQ/E5dGfosr+ZLWj7Dg4v2ZnUbmAP2mRk01v+1SGI=
+        password: # to be updated per travis repo
+          secure: REZxr4I6JYv2bdrxNn7Nn9rwmx7DouxBXXdnaQr9QW53kzhybkMtqjUzQc6r508m+2NsrWl9lKn4kgvOvnKnK2cqal2pRoXtG+xPKqKnTeVs8jbPvuurZfAsO4vGjSUgxgSvTHEqO//8pmcfTA5WgYZM1LwWYUQKO+kvDGJ7PnsZxrgyh2fKwWmjgdljkCPS0eNDXPVmaIu3ZqEbOVRxYi8YVoP/vzVfSxAY2Nt9XadrCLidMwAxhIsqKMUOCf/uDHHfr3CqjFvwzFk+Woxj7lAk5hZGVkU9aNT3CmryEwqxPjhlBITjlbF4KXV3XONPkX/Va4GcCMIr0t3qXvLYpQhp0thns9Tb3Mg1PsfSMK+LUgjjiBC45dTtbTW6LZxEMwn1+rg4LXK2IXuLYXp5WEepBsK+kSpgLRVSjRWVQq+gCru/fcSz8+VtqzviMPamNS4i4AKZM0aHL+yY93k3V4XhJdWPqZFmVLDpOWrRO9BzHj5BcXeJmLCFyc3XfnuIzaUF86aQeW4rle+aG8FHEGqAEhWNu76anXgxR74ts0U6Ztw6lxBZ2bsDA8sbwsWSwivC65umjYh5qHdP6EiZ3jmz8MhcZxOTvlRgoh+UjXkxlqYpDtRVKfIGEmrWjvGCG2iPMgEmL/buG6hnhfTdhAsrsvmW+jVx1XgJJziDQK8=
+        distributions: "sdist bdist_wheel" # what distributions to upload
+        on:
+          tags: true # only deploys if a git TAG exists for the commit
+          # branch: master # only deploys if branch is master
