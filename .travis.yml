@@ -29,6 +29,7 @@ jobs:
         - 'pipenv install --ignore-pipfile --dev'
       script: 
         - 'pipenv run python setup.py install'
+        - 'pipenv run pytest -s --cov=msb_client'
         - 'pipenv run python setup.py sdist bdist_wheel'
       deploy:
         provider: pypi # deploys to pypi repo
