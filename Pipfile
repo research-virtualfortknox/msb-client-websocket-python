@@ -4,8 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "==4.4.1"
-pytest-cov = "==2.7.1"
+pytest = "==5.4.2"
+pytest-cov = "==2.8.1"
 pytest-ordering = "==0.6"
 requests = "*"
 bumpversion = "*"
@@ -19,3 +19,6 @@ jsonschema = "==3.0.1"
 jsonpickle = "==1.1"
 enum34 = "==1.1.6"
 websocket_client = "==0.56.0"
+
+[requires]
+python_version = "3.6"
