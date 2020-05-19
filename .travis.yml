@@ -19,6 +19,9 @@ script:
   - 'pipenv run pytest -s --cov=msb_client'
   - 'pipenv run python setup.py sdist bdist_wheel'
 
+after_success:
+  - coveralls
+  
 deploy:
   provider: pypi # deploys to pypi repo
   user: 
