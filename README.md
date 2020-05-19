@@ -8,6 +8,7 @@
 
 [![Build Status](https://travis-ci.org/research-virtualfortknox/msb-client-websocket-python.svg?branch=master)](https://travis-ci.org/research-virtualfortknox/msb-client-websocket-python)
 [![PyPI version](https://badge.fury.io/py/msb-client-websocket-python.svg)](https://badge.fury.io/py/msb-client-websocket-python)
+[![Coverage Status](https://coveralls.io/repos/github/research-virtualfortknox/msb-client-websocket-python/badge.svg?branch=feature-coveralls)](https://coveralls.io/github/research-virtualfortknox/msb-client-websocket-python?branch=feature-coveralls)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fresearch-virtualfortknox%2Fmsb-client-websocket-python.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fresearch-virtualfortknox%2Fmsb-client-websocket-python?ref=badge_shield)
 
 **Compatibility Matrix**
