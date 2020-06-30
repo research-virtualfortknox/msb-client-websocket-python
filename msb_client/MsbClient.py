@@ -790,7 +790,7 @@ class MsbClient(websocket.WebSocketApp):
             e = jsonpickle.decode(
                 jsonpickle.encode(self.events[event], unpicklable=False)
             )
-            for key in e.keys():
+            for key in list(e.keys()):
                 if key == "id":
                     e["@id"] = e["id"]
                     del e[key]
@@ -799,7 +799,7 @@ class MsbClient(websocket.WebSocketApp):
             if e["dataFormat"] is None:
                 del e["dataFormat"]
             del e["isArray"]
-            for key in e.keys():
+            for key in list(e.keys()):
                 current_e_props.append(key)
             for key in current_e_props:
                 if key not in e_props:
