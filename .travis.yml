@@ -3,12 +3,13 @@ language: python
 python:
   - '3.6'
 
+# build matrix with envs for different MSB versions
 env:
   global:
     - PYTHONWARNINGS="ignore:Unverified HTTPS request"
-    - TESTENV_BROKER_URL=https://ws.15xr.msb.oss.cell.vfk.fraunhofer.de/
-    - TESTENV_SO_URL=https://so.15xr.msb.oss.cell.vfk.fraunhofer.de/
-    - TESTENV_FLOW_URL=https://flow.15xr.msb.oss.cell.vfk.fraunhofer.de/
+  jobs:
+    - TESTENV_BROKER_URL=https://ws.15xr.msb.oss.cell.vfk.fraunhofer.de/ TESTENV_SO_URL=https://so.15xr.msb.oss.cell.vfk.fraunhofer.de/ TESTENV_FLOW_URL=https://flow.15xr.msb.oss.cell.vfk.fraunhofer.de/
+    - DEPLOY_MSB_CLIENT_LIB=yes TESTENV_BROKER_URL=https://ws.16xr.msb.oss.cell.vfk.fraunhofer.de/ TESTENV_SO_URL=https://so.16xr.msb.oss.cell.vfk.fraunhofer.de/ TESTENV_FLOW_URL=https://flow.16xr.msb.oss.cell.vfk.fraunhofer.de/
 
 install:
   - 'pip install pipenv'
@@ -29,4 +30,5 @@ deploy:
   distributions: "sdist bdist_wheel" # what distributions to upload
   on:
     tags: true # only deploys if a git TAG exists for the commit
+    condition: $DEPLOY_MSB_CLIENT_LIB = yes # only deploys if condition true
     # branch: master # only deploys if branch is master
