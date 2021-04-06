@@ -16,10 +16,10 @@ wheel = "*"
 twine = "*"
 
 [packages]
-jsonschema = "==3.0.1"
-jsonpickle = "==1.1"
-enum34 = "==1.1.6"
-websocket_client = "==0.56.0"
+jsonschema = "==3.2.0"
+jsonpickle = "==2.0.0"
+enum34 = "==1.1.10"
+websocket_client = "==0.57.0"
 
 [requires]
 python_version = "3.6"
