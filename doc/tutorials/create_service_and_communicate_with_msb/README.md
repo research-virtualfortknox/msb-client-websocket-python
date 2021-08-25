@@ -35,6 +35,13 @@ The MSB maps events to functions by mapping their data formats.
 pip install msb-client-websocket-python
 ```
 * Optional: Use ```pipenv``` to run your python app in a virtual environment to avoid dependency isssues with other apps
+```sh
+python -m pipenv install
+```
+```sh
+python -m pipenv shell
+```
+When using ```pipenv``` make sure to start the ```pipenv shell``` an execute the python commands for the project here.
 
 ## Adapt application.properties
 
