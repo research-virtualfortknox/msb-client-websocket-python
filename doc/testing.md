@@ -10,14 +10,22 @@ This is an overview on how to test the project.
 
 Install the required python modules in a virtual environment
 
+Setup pipenv to develop in a virtual environment
+```sh
+$ pip install pipenv
+```
 ```sh
 $ python -m pipenv install --dev
 ```
 
+And always run your development inside the pipenv shell
 ```sh
 $ python -m pipenv shell
 ```
 
+This will ensure that you use a virtual environment that is separated from the global python packages.
+
+Install the msb_client python package in the virtual environment:
 ```sh
 $ python setup.py install
 ```
@@ -57,7 +65,20 @@ $ TESTENV_CUSTOMIP=10.15.26.7 pytest -s test/test_integration.py
 
 Or define urls for webscoket inteface, smart object management and flow management:
 ```sh
+$ TESTENV_BROKER_URL=https://ws.15xr.msb.oss.cell.vfk.fraunhofer.de/ \
+TESTENV_SO_URL=https://so.15xr.msb.oss.cell.vfk.fraunhofer.de/ \
+TESTENV_FLOW_URL=https://flow.15xr.msb.oss.cell.vfk.fraunhofer.de/ \
+pytest -s test/test_integration.py
+```
 
+Or define urls and run integration test with powershell
+
+```cmd
+> $env:TESTENV_BROKER_URL="https://ws.15xr.msb.oss.cell.vfk.fraunhofer.de/"
+> $env:TESTENV_SO_URL="https://so.15xr.msb.oss.cell.vfk.fraunhofer.de/"
+> $env:TESTENV_FLOW_URL="https://flow.15xr.msb.oss.cell.vfk.fraunhofer.de/"
+> $env:TESTENV_OWNER_UUID="f10cfa25-58d4-41ba-8ecf-60ced3d60677"
+> pytest -s test/test_integration.py
 ```
 
 ## All Test

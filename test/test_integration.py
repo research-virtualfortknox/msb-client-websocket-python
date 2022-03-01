@@ -55,10 +55,13 @@ flowCreated = False
 flowDeployed = False
 receivedArrayEv = False
 
+owner_uuid = OWNER_UUID
+
 # Rest urls
 broker_url = "https://localhost:8084"
 so_url = "http://localhost:8081"
 flow_url = "http://localhost:8082"
+
 # replace hostname with customIp
 if customIp:
     broker_url = re.sub(
@@ -79,6 +82,10 @@ if "TESTENV_FLOW_URL" in os.environ:
     flow_url = os.environ["TESTENV_FLOW_URL"]
     flow_url = flow_url.rstrip("\n")
     logging.info("Flow Url Env was set >" + str(flow_url) + "<")
+if "TESTENV_OWNER_UUID" in os.environ:
+    owner_uuid = os.environ["TESTENV_OWNER_UUID"]
+    owner_uuid = owner_uuid.rstrip("\n")
+    logging.info("Owner Uuid Env was set >" + str(owner_uuid) + "<")
 
 myMsbClient = None
 flow_json = None
@@ -91,7 +98,7 @@ class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
         logging.info("Smart Object URL: >" + so_url + "<")
 
         response = requests.get(
-            so_url + "/service/token/" + OWNER_UUID, verify=False
+            so_url + "/service/token/" + owner_uuid, verify=False
         )
         self.assertEqual(response.status_code, 201, "Can not reach smart-object-management")
 
@@ -100,7 +107,7 @@ class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
         logging.info("Flow URL: >" + str(flow_url) + "<")
 
         response = requests.get(
-            flow_url + "/integrationFlow/customer/" + OWNER_UUID, verify=False
+            flow_url + "/integrationFlow/customer/" + owner_uuid, verify=False
         )
         self.assertEqual(response.status_code, 200, "Can not reach integration-flow-management")
 
@@ -114,7 +121,7 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
 
         # get valid verification token
         response = requests.get(
-            so_url + "/service/token/" + OWNER_UUID, verify=False
+            so_url + "/service/token/" + owner_uuid, verify=False
         )
         self.assertEqual(
             response.status_code,
@@ -360,6 +367,7 @@ def setup_flow():
     assert len(flow_json) > 0, "Failed to read file"
 
     flow_json = flow_json.replace("%%%%FLOWNAME%%%%", FLOW_NAME)
+    flow_json = flow_json.replace("%%%%OWNERUUID%%%%", owner_uuid)
     flow_json = flow_json.replace("%%%%SOUUID1%%%%", SO_UUID)
     flow_json = flow_json.replace("%%%%SOUUID2%%%%", SO_UUID)
     flow_json = flow_json.replace("%%%%SONAME1%%%%", SO_NAME)
