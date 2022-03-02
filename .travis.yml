@@ -1,7 +1,7 @@
 language: python
 
 python:
-  - '3.6'
+  - '3.7'
 
 # build matrix with envs for different MSB versions
 env:
