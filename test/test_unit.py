@@ -356,7 +356,6 @@ class TestMSBClientCreateClientFunctions(unittest.TestCase):
         self.assertEqual(len(myMsbClient.functions[function_id].responseEvents), len(responseEvents))
         self.assertEqual(myMsbClient.functions[function_id].implementation, printMsg)
 
-    @pytest.mark.last
     def test_addClientFunctionPerSingleParamNonStaticFunctionPointer(self):
         # 1. ARRANGE
         myInstance = myClass()
@@ -2587,7 +2586,6 @@ class TestMSBClientEventCaching(unittest.TestCase):
                 eventFoundInCache = True
         self.assertEqual(eventFoundInCache, False)
 
-    @pytest.mark.last
     def test_doNotCacheEventIfDisabledForEvent(self):
         # 1. ARRANGE
         myMsbClient = MsbClient()
