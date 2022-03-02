@@ -48,8 +48,8 @@ setup(
     include_package_data=True,
     install_requires=[
         "websocket-client==0.57.0",
-        "jsonschema>=3.2.0",
-        "jsonpickle>=2.0.0",
+        "jsonschema>=4.4.0",
+        "jsonpickle>=2.1.0",
         "enum34>=1.1.10",
     ],
     zip_safe=False,
