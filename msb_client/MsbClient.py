@@ -210,7 +210,7 @@ class MsbClient(websocket.WebSocketApp):
 
     def on_close(self, code, reason):
         logging.debug("DISCONNECTED")
-        logging.debug("Websocket Close Status Code: (" + str(code) + "); Reason: ("+ str(reason) + ")")
+        logging.debug("Websocket Close Status Code: (" + str(code) + "); Reason: (" + str(reason) + ")")
         self.connected = False
         self.registered = False
         if self.autoReconnect and not self.userDisconnect:

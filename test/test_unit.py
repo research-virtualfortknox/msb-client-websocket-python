@@ -1756,10 +1756,10 @@ class TestMSBClientCreateSelfDescription(unittest.TestCase):
         # 3. ASSERT
         selfDescription = myMsbClient.getSelfDescription()
 
-        """" 
+        """"
         Fails randomly because events list in selfDescription is list while events property of MsbClient is Dict
         therefore first Element in list depends on alpabetical order of event ID than insertation sequence of events
-        
+
         Therefore read events with following command than using selfDescription["events"][X]
         """
 

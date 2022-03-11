@@ -315,7 +315,8 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             # send test data
             myMsbClient.publish(
                 "COMPLEX_JSON_EVENT",
-                { "staff": [ { "name": "Max Mustermann", "status": "present" }, { "name": "Mia Musterfrau", "status": "absent" } ] },
+                {"staff": [{"name": "Max Mustermann", "status": "present"},
+                           {"name": "Mia Musterfrau", "status": "absent"}]},
                 None,
                 True,
                 None,
@@ -743,12 +744,17 @@ def complexfun_implementation(msg):
     receivedComplexEvCheck = True
     receivedComplexEvCheck = \
         str(msg["dataObject"]) == \
-        str({ "staff": [ { "name": "Max Mustermann", "status": "present" }, { "name": "Mia Musterfrau", "status": "absent" } ] })
+        str(
+            {"staff": [
+                {"name": "Max Mustermann", "status": "present"},
+                {"name": "Mia Musterfrau", "status": "absent"}
+            ]}
+        )
     logging.debug(
         "Complex Function has been called, correlationId: " + msg["correlationId"]
     )
     receivedComplexEvWithCorrectCorrelationId = (
-            str(msg["correlationId"]) == CORRELATIOON_ID_FOR_TEST_COMPLEX_OBJECT
+        str(msg["correlationId"]) == CORRELATIOON_ID_FOR_TEST_COMPLEX_OBJECT
     )
     receivedComplexEv = True
 
