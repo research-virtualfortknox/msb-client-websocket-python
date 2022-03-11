@@ -147,7 +147,6 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
         # setup msb client
         setup_msbclient(verification_token)
         # print smart object as json
-        logging.debug("Self Description" + str(myMsbClient.getSelfDescription()))
         logging.debug("Self Description" + myMsbClient.objectToJson(myMsbClient.getSelfDescription()))
 
     @pytest.mark.run(order=4)
