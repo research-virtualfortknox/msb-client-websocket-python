@@ -116,3 +116,9 @@ Generate `html report`
 $ TESTENV_CUSTOMIP=10.15.26.7 python -m pytest -s --cov=msb_client --cov-report html:./Output/coverage
 ```
 
+## Issues
+
+How to improve python shell formatting in git bash on windows:
+```sh
+alias python='winpty python.exe'
+```
