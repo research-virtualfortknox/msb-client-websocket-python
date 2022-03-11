@@ -47,13 +47,15 @@ SO_DESCRIPTION = "MSBClientIntegrationTestSO description"
 FLOW_NAME = "MSBClientIntegrationTestFlow" + SO_UUID[-6:]
 TIMEOUT = 30.0
 WAITING_TIME = 5
-CORRELATIOON_ID_FOR_TEST = "123456789987654321"
+CORRELATIOON_ID_FOR_TEST_SIMPLE_ARRAY = "123456789987654321"
+CORRELATIOON_ID_FOR_TEST_COMPLEX_OBJECT = "349857439587349587"
 
 soCreated = False
 flow_id = 0
 flowCreated = False
 flowDeployed = False
 receivedArrayEv = False
+receivedComplexEv = False
 
 owner_uuid = OWNER_UUID
 
@@ -145,6 +147,7 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
         # setup msb client
         setup_msbclient(verification_token)
         # print smart object as json
+        logging.debug("Self Description" + str(myMsbClient.getSelfDescription()))
         logging.debug("Self Description" + myMsbClient.objectToJson(myMsbClient.getSelfDescription()))
 
     @pytest.mark.run(order=4)
@@ -161,7 +164,7 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
                 "Simple String",
                 None,
                 True,  # cached
-                None,
+                datetime.datetime.utcnow(),
                 None,
             )
             eventFoundInCache = False
@@ -274,7 +277,7 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             time.sleep(WAITING_TIME)
 
             #
-            # Test publish and receive data
+            # Test publish and receive data (simple array)
             #
             # send test data
             myMsbClient.publish(
@@ -283,7 +286,7 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
                 None,
                 True,
                 None,
-                CORRELATIOON_ID_FOR_TEST,
+                CORRELATIOON_ID_FOR_TEST_SIMPLE_ARRAY,
             )
 
             # wait for function /arrayfun called by event arrayev
@@ -301,6 +304,39 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
                     break
                 if time.time() > timeout:
                     self.assertTrue(receivedArrayEv, "Invalid or missing correlationId")
+                    break
+                time.sleep(WAITING_TIME)
+
+            time.sleep(WAITING_TIME)
+
+            #
+            # Test publish and receive data (complex object)
+            #
+            # send test data
+            myMsbClient.publish(
+                "COMPLEX_JSON_EVENT",
+                { "staff": [ { "name": "Max Mustermann", "status": "present" }, { "name": "Mia Musterfrau", "status": "absent" } ] },
+                None,
+                True,
+                None,
+                CORRELATIOON_ID_FOR_TEST_COMPLEX_OBJECT,
+            )
+
+            # wait for function COMPLEX_JSON_FUNCTION called by event COMPLEX_JSON_EVENT
+            timeout = time.time() + 60
+            while True:
+                if receivedComplexEv:
+                    logging.info("Function COMPLEX_JSON_FUNCTION called")
+                    self.assertTrue(
+                        receivedComplexEvCheck, "Wrong message received in COMPLEX_JSON_FUNCTION"
+                    )
+                    self.assertTrue(
+                        receivedComplexEvWithCorrectCorrelationId,
+                        "Function COMPLEX_JSON_FUNCTION not called within an acceptable timeframe",
+                    )
+                    break
+                if time.time() > timeout:
+                    self.assertTrue(receivedComplexEv, "Invalid or missing correlationId")
                     break
                 time.sleep(WAITING_TIME)
 
@@ -655,7 +691,7 @@ def setup_msbclient(verification_token):
                 "$ref": "#/definitions/Team"
             }
         },
-        printMsg,
+        complexfun_implementation,
         False,
         ["EVENT1", "EVENT2"],
     )
@@ -682,7 +718,9 @@ def setup_msbclient(verification_token):
 
 def arrayfun_implementation(msg):
     logging.debug("Array Function has been called, message: " + str(msg["a"]))
+    global receivedArrayEv
     global receivedArrayEvIndexCheck
+    global receivedArrayEvWithCorrectCorrelationId
     receivedArrayEvIndexCheck = True
     receivedArrayEvIndexCheck = str(msg["a"][0]) == "Hello"
     receivedArrayEvIndexCheck = str(msg["a"][1]) == "World"
@@ -690,12 +728,29 @@ def arrayfun_implementation(msg):
     logging.debug(
         "Array Function has been called, correlationId: " + msg["correlationId"]
     )
-    global receivedArrayEvWithCorrectCorrelationId
     receivedArrayEvWithCorrectCorrelationId = (
-        str(msg["correlationId"]) == CORRELATIOON_ID_FOR_TEST
+        str(msg["correlationId"]) == CORRELATIOON_ID_FOR_TEST_SIMPLE_ARRAY
     )
-    global receivedArrayEv
     receivedArrayEv = True
+
+
+def complexfun_implementation(msg):
+    logging.debug("Complex Function has been called, message: " + str(msg["dataObject"]))
+    global receivedComplexEv
+    global receivedComplexEvCheck
+    global receivedComplexEvWithCorrectCorrelationId
+
+    receivedComplexEvCheck = True
+    receivedComplexEvCheck = \
+        str(msg["dataObject"]) == \
+        str({ "staff": [ { "name": "Max Mustermann", "status": "present" }, { "name": "Mia Musterfrau", "status": "absent" } ] })
+    logging.debug(
+        "Complex Function has been called, correlationId: " + msg["correlationId"]
+    )
+    receivedComplexEvWithCorrectCorrelationId = (
+            str(msg["correlationId"]) == CORRELATIOON_ID_FOR_TEST_COMPLEX_OBJECT
+    )
+    receivedComplexEv = True
 
 
 class myClass():

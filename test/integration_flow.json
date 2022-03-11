@@ -82,7 +82,86 @@
       ],
       "outputs": [2],
       "processors": [1]
+    },
+    {
+      "@id": 3,
+      "sources": [],
+      "targets": [],
+      "inputs": [
+        {
+          "@id": 3,
+          "transitionInput": {
+            "@id": 3,
+            "connectionFormat": "JSON",
+            "inputParameters": [3],
+            "eventId": "COMPLEX_JSON_EVENT",
+            "service": {
+              "@id": 3,
+              "uUID": "%%%%SOUUID1%%%%",
+              "name": "%%%%SONAME1%%%%",
+              "type": "SMART_OBJECT",
+              "events": [3],
+              "endpoints": []
+            },
+            "type": "InputEvent"
+          },
+          "processors": [
+            {
+              "@id": 3,
+              "className": "processor.mapping.datamappingprocessor",
+              "inputs": [3],
+              "output": {
+                "@id": 4,
+                "transitionOutput": {
+                  "@id": 3,
+                  "connectionFormat": "JSON",
+                  "outputParameters": [4],
+                  "functionId": "COMPLEX_JSON_FUNCTION",
+                  "serviceEndpoint": {
+                    "@id": 3,
+                    "endpointUri": "vfk.msb.interface.websocket[127.0.0.1:8084]",
+                    "connectionType": "WEBSOCKET",
+                    "functionCalls": [3],
+                    "service": {
+                      "@id": 4,
+                      "uUID": "%%%%SOUUID2%%%%",
+                      "name": "%%%%SONAME2%%%%",
+                      "type": "SMART_OBJECT",
+                      "events": [],
+                      "endpoints": [3]
+                    }
+                  },
+                  "type": "FunctionCall"
+                },
+                "processor": 3,
+                "direction": "Output"
+              },
+              "pattern": {
+                "mapping": [
+                  {
+                    "source": [
+                      {
+                        "path": "/dataObject",
+                        "type": "OBJECT"
+                      }
+                    ],
+                    "target": {
+                      "path": "/dataObject",
+                      "type": "OBJECT",
+                      "template": "${/dataObject}"
+                    }
+                  }
+                ],
+                "template": "{ \"Member\": { \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" }, \"status\": { \"enum\": [\"present\", \"absent\"], \"type\": \"string\" } } }, \"Team\": { \"type\": \"object\", \"properties\": { \"staff\": { \"type\": \"array\", \"items\": { \"$ref\": \"#/definitions/Member\" } } } }, \"dataObject\": { \"$ref\": \"#/definitions/Team\" } }"
+              }
+            }
+          ],
+          "direction": "Input"
+        }
+      ],
+      "outputs": [4],
+      "processors": [3]
     }
   ],
-  "services": [1, 2]
+  "services": [1, 2, 3, 4]
 }

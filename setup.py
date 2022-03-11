@@ -49,7 +49,6 @@ setup(
     install_requires=[
         "websocket-client==0.57.0",
         "jsonschema>=4.4.0",
-        "jsonpickle>=2.1.0",
         "enum34>=1.1.10",
     ],
     zip_safe=False,

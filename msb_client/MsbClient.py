@@ -7,9 +7,10 @@ Licensed under the Apache License, Version 2.0
 See the file "LICENSE" for the full license governing this code.
 """
 
-import websocket, threading, json, jsonschema, jsonpickle, ssl, time, uuid, os, logging
+import websocket, threading, json, jsonschema, ssl, time, uuid, os, logging
 from random import randint
 import datetime
+import copy
 
 from .Event import Event
 from .ComplexDataFormat import ComplexDataFormat
@@ -96,10 +97,6 @@ class MsbClient(websocket.WebSocketApp):
             self.token = token
         else:
             self.readConfig()
-
-    # used for serialization and deserialization of complex Python objects
-    jsonpickle.set_encoder_options("json", sort_keys=False, indent=4)
-    jsonpickle.set_preferred_backend("json")
 
     # list of all valid MSB message types
     MSBMessageTypes = [
@@ -631,6 +628,8 @@ class MsbClient(websocket.WebSocketApp):
         event["priority"] = self.events[eventId].priority
         if postDate is None:
             event["postDate"] = datetime.datetime.utcnow().isoformat()[:-3] + "Z"
+        else:
+            event["postDate"] = str(postDate)
         if correlationId is not None:
             event["correlationId"] = correlationId
 
@@ -717,7 +716,10 @@ class MsbClient(websocket.WebSocketApp):
         newParam["type"] = newParam["type"].upper()
         if "format" in newParam:
             newParam["format"] = newParam["format"].upper()
-        newParam["value"] = value
+        if "format" in newParam and newParam["format"] == "DATE-TIME":
+            newParam["value"] = str(value)
+        else:
+            newParam["value"] = value
         self.configuration["parameters"][key] = newParam
 
     def getConfigParameter(self, key):
@@ -768,12 +770,20 @@ class MsbClient(websocket.WebSocketApp):
             self.ws.send("R " + self.objectToJson(self.getSelfDescription()))
 
     def objectToJson(self, object):
-        """Converts a python object into a json ovject.
+        """Converts a python object into a json object.
 
          Returns:
             json object: The resulting json object
         """
-        return jsonpickle.encode(object, unpicklable=False)
+        return json.dumps(object, default=lambda o: o.__dict__, indent=4)
+
+    def jsonToObject(self, json):
+        """Converts a json into a python object.
+
+         Returns:
+            python object: The resulting python object
+        """
+        return json.loads(object)
 
     def getSelfDescription(self):
         """Generate the self description JSON object of the application or smart object."""
@@ -787,8 +797,13 @@ class MsbClient(websocket.WebSocketApp):
         e_props = ["@id", "id", "dataFormat", "description", "eventId", "name"]
         for event in self.events:
             current_e_props = []
-            e = jsonpickle.decode(
-                jsonpickle.encode(self.events[event], unpicklable=False)
+            # fix serialization issues "AttributeError: 'mappingproxy' object has no attribute '__dict__'"
+            # caused by property "df" directly holding python datatypes (int, str, bool, ...)
+            # Workaround: Deep copy event, set string value to property "df" before serializing
+            msbEvent = copy.deepcopy(self.events[event])
+            msbEvent.df = "non-serializable-workaround"
+            e = json.loads(
+                json.dumps(msbEvent, default=lambda o: o.__dict__, indent=4)
             )
             for key in list(e.keys()):
                 if key == "id":
@@ -812,8 +827,8 @@ class MsbClient(websocket.WebSocketApp):
         self_description["events"] = _ev
         _fu = []
         for function in self.functions:
-            f = jsonpickle.decode(
-                jsonpickle.encode(self.functions[function], unpicklable=False)
+            f = json.loads(
+                json.dumps(self.functions[function], default=lambda o: o.__dict__, indent=4)
             )
             if f["responseEvents"] and len(f["responseEvents"]) > 0:
                 _re = []
@@ -867,7 +882,7 @@ def vadilateEventDataFormat(df):
         return True
     schema_file = os.path.join(os.path.dirname(__file__), "event_schema.json")
     schema = json.loads(open(schema_file).read())
-    do = {"definitions": json.loads(jsonpickle.encode(df))}
+    do = {"definitions": json.loads(json.dumps(df, default=lambda o: o.__dict__, indent=4))}
     try:
         jsonschema.Draft4Validator(schema).validate(do)
     except Exception as e:
@@ -886,7 +901,7 @@ def vadilateFunctionDataFormat(df):
         return True
     schema_file = os.path.join(os.path.dirname(__file__), "function_schema.json")
     schema = json.loads(open(schema_file).read())
-    do = {"definitions": json.loads(jsonpickle.encode(df))}
+    do = {"definitions": json.loads(json.dumps(df, default=lambda o: o.__dict__, indent=4))}
     try:
         jsonschema.Draft4Validator(schema).validate(do)
     except Exception as e:
