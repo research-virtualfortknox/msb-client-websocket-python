@@ -21,4 +21,4 @@ enum34 = "==1.1.10"
 websocket_client = "==0.57.0"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Setup [Python](https://www.python.org/downloads/) **version 3.7.x**
+- Setup [Python](https://www.python.org/downloads/) **version 3.8.x**
 - This MSB client project sources including app_sample.py downloaded
 
 ## Install python modules

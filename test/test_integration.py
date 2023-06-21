@@ -23,6 +23,8 @@ from msb_client.Event import Event
 from msb_client.Function import Function
 from msb_client.MsbClient import MsbClient
 
+from requests.auth import HTTPBasicAuth
+
 try:
     import unittest2 as unittest
 except ImportError:
@@ -33,6 +35,8 @@ logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 
 
 # Check env variables
+api_username = os.getenv('API_USERNAME', 'admin')
+api_password = os.getenv('API_PASSWORD', 'password')
 customIp = None
 if "TESTENV_CUSTOMIP" in os.environ:
     customIp = os.environ["TESTENV_CUSTOMIP"]
@@ -100,7 +104,9 @@ class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
         logging.info("Smart Object URL: >" + so_url + "<")
 
         response = requests.get(
-            so_url + "/service/token/" + owner_uuid, verify=False
+            so_url + "/service/token/" + owner_uuid, 
+            verify=False,
+            auth=HTTPBasicAuth(api_username, api_password)
         )
         self.assertEqual(response.status_code, 201, "Can not reach smart-object-management")
 
@@ -109,7 +115,9 @@ class IntegrationTestMSBClientRestInterfaces(unittest.TestCase):
         logging.info("Flow URL: >" + str(flow_url) + "<")
 
         response = requests.get(
-            flow_url + "/integrationFlow/customer/" + owner_uuid, verify=False
+            flow_url + "/integrationFlow/customer/" + owner_uuid,
+            verify=False,
+            auth=HTTPBasicAuth(api_username, api_password)
         )
         self.assertEqual(response.status_code, 200, "Can not reach integration-flow-management")
 
@@ -123,7 +131,9 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
 
         # get valid verification token
         response = requests.get(
-            so_url + "/service/token/" + owner_uuid, verify=False
+            so_url + "/service/token/" + owner_uuid,
+            verify=False,
+            auth=HTTPBasicAuth(api_username, api_password)
         )
         self.assertEqual(
             response.status_code,
@@ -242,7 +252,8 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
                     "Content-Type": "application/json",
                 },
                 data=str(flow_json),
-                verify=False
+                verify=False,
+                auth=HTTPBasicAuth(api_username, api_password)
             )
             response_dict = json.loads(response.text)
             self.assertEqual(
@@ -265,7 +276,8 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             # deploy flow
             response = requests.put(
                 flow_url + "/integrationFlow/" + str(flow_id) + "/deploy",
-                verify=False
+                verify=False,
+                auth=HTTPBasicAuth(api_username, api_password)
             )
             self.assertEqual(
                 response.status_code, 200, str("Deploying integration flow failed: " + str(response))
@@ -351,7 +363,8 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
             if flowDeployed:
                 response = requests.put(
                     flow_url + "/integrationFlow/" + str(flow_id) + "/undeploy",
-                    verify=False
+                    verify=False,
+                    auth=HTTPBasicAuth(api_username, api_password)
                 )
                 self.assertEqual(
                     response.status_code,
@@ -372,7 +385,8 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                     },
-                    verify=False
+                    verify=False,
+                    auth=HTTPBasicAuth(api_username, api_password)
                 )
                 self.assertEqual(
                     response.status_code, 200, str("Deleting integration flow failed")
@@ -388,7 +402,8 @@ class IntegrationTestMSBClientBasicCommunication(unittest.TestCase):
                 response = requests.delete(
                     so_url + "/smartobject/" + SO_UUID,
                     headers={"Content-Type": "application/json"},
-                    verify=False
+                    verify=False,
+                    auth=HTTPBasicAuth(api_username, api_password)
                 )
                 self.assertEqual(response.status_code, 200, "Problem deleting smart object")
 
