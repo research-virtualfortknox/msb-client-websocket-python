@@ -4,8 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "==7.0.1"
-pytest-cov = "==3.0.0"
+pytest = "==7.3.2"
+pytest-cov = "==4.1.0"
 pytest-ordering = "==0.6"
 coveralls = "==3.3.1"
 requests = "*"
