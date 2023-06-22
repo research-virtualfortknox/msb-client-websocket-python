@@ -60,20 +60,24 @@ Run `integration tests` against local or remote MSB instance.
 
 Set IP of MSB server and use standard ports:
 ```sh
-$ TESTENV_CUSTOMIP=10.15.26.7 python -m pytest -s test/test_integration.py
+$ TESTENV_CUSTOMIP=10.15.26.7 pytest -s test/test_integration.py
 ```
 
 Or define urls for webscoket inteface, smart object management and flow management:
 ```sh
-$ TESTENV_BROKER_URL=https://ws.15xr.msb.oss.cell.vfk.fraunhofer.de/ \
-TESTENV_SO_URL=https://so.15xr.msb.oss.cell.vfk.fraunhofer.de/ \
-TESTENV_FLOW_URL=https://flow.15xr.msb.oss.cell.vfk.fraunhofer.de/ \
-python -m pytest -s test/test_integration.py
+    $ API_USERNAME=username \
+    API_PASSWORD=password \
+    TESTENV_BROKER_URL=https://ws.16xr.msb.oss.cell.vfk.fraunhofer.de/ \
+    TESTENV_SO_URL=https://so.16xr.msb.oss.cell.vfk.fraunhofer.de/ \
+    TESTENV_FLOW_URL=https://flow.16xr.msb.oss.cell.vfk.fraunhofer.de/ \
+    pytest -s test/test_integration.py
 ```
 
 Or define urls and run integration test with powershell
 
 ```cmd
+> $env:API_USERNAME="username"
+> $env:API_PASSWORD="password"
 > $env:TESTENV_BROKER_URL="https://ws.15xr.msb.oss.cell.vfk.fraunhofer.de/"
 > $env:TESTENV_SO_URL="https://so.15xr.msb.oss.cell.vfk.fraunhofer.de/"
 > $env:TESTENV_FLOW_URL="https://flow.15xr.msb.oss.cell.vfk.fraunhofer.de/"

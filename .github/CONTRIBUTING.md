@@ -83,7 +83,7 @@ Try to avoid large Pull Requests as it will take longer to review them.
 ## Development Setup
 
 Requirements:
-- Setup [Python](https://www.python.org/downloads/) **version 3.7.x**
+- Setup [Python](https://www.python.org/downloads/) **version 3.8.x**
 - Pipenv for package management and virtual environments (see below)
 
 Editor Suggestion:
