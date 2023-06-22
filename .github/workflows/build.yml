@@ -37,6 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONWARNINGS: ignore:Unverified HTTPS request
+      API_USERNAME: ${{ secrets.API_USERNAME }}
+      API_PASSWORD: ${{ secrets.API_PASSWORD }}
       TESTENV_BROKER_URL: ${{ secrets.TESTENV_BROKER_URL }}
       TESTENV_SO_URL: ${{ secrets.TESTENV_SO_URL }}
       TESTENV_FLOW_URL: ${{ secrets.TESTENV_FLOW_URL }}
@@ -58,7 +60,9 @@ jobs:
     - name: Run tests
       run: |
         pipenv run python setup.py install
-        TESTENV_BROKER_URL=$TESTENV_BROKER_URL TESTENV_SO_URL=$TESTENV_SO_URL TESTENV_FLOW_URL=$TESTENV_FLOW_URL pipenv run pytest -s --cov=msb_client
+        API_USERNAME=$API_USERNAME API_PASSWORD=$API_PASSWORD \
+        TESTENV_BROKER_URL=$TESTENV_BROKER_URL TESTENV_SO_URL=$TESTENV_SO_URL TESTENV_FLOW_URL=$TESTENV_FLOW_URL \
+        pipenv run pytest -s --cov=msb_client
         pipenv run python setup.py sdist bdist_wheel
     - name: Coveralls Parallel
       uses: coverallsapp/github-action@v2
