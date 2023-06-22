@@ -10,14 +10,13 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.8]
-        include:
-          - environment: MSB_1.5
-          - environment: MSB_1.6
+        environment: ['MSB_1.5', 'MSB_1.6']
             
     env:
       PYTHONWARNINGS: ignore:Unverified HTTPS request
 
-    environment: ${{ matrix.environment }}
+    environment:
+      name: ${{ matrix.environment }} 
 
     steps:
     - uses: actions/checkout@v2
