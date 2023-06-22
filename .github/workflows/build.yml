@@ -31,7 +31,7 @@ jobs:
         pipenv run pytest -s --cov=msb_client
         pipenv run python setup.py sdist bdist_wheel
     - name: Coveralls Parallel
-      uses: coverallsapp/github-action@1.1.2
+      uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.COVERALLS_TOKEN  }}
         flag-name: run-${{ matrix.python-version }}
