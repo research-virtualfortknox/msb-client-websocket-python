@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
 
   build_1_5:
-    environment: MSB_1_5
+    environment: MSB_1.5
     runs-on: ubuntu-latest
     env:
       PYTHONWARNINGS: ignore:Unverified HTTPS request
@@ -33,7 +33,7 @@ jobs:
         TESTENV_BROKER_URL=$TESTENV_BROKER_URL TESTENV_SO_URL=$TESTENV_SO_URL TESTENV_FLOW_URL=$TESTENV_FLOW_URL pipenv run pytest -s --cov=msb_client
 
   build_1_6:
-    environment: MSB_1_6
+    environment: MSB_1.6
     runs-on: ubuntu-latest
     env:
       PYTHONWARNINGS: ignore:Unverified HTTPS request
