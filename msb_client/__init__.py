@@ -5,7 +5,7 @@ Authors: Daniel Stock, Matthias Stoehr
 Licensed under the Apache License, Version 2.0
 See the file "LICENSE" for the full license governing this code.
 """
-__version__ = "1.0.13"
+__version__ = "1.0.14"
 
 # from .ComplexDataFormat import ComplexDataFormat
 # from .DataFormat import DataFormat
