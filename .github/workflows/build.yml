@@ -10,13 +10,15 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.8]
-        environment: ['MSB_1.5', 'MSB_1.6']
+        include:
+          - environment: MSB_1.5
+          - environment: MSB_1.6
             
     env:
       PYTHONWARNINGS: ignore:Unverified HTTPS request
-      TESTENV_BROKER_URL: ${{ secrets.TESTENV_BROKER_URL }}
-      TESTENV_SO_URL: ${{ secrets.TESTENV_SO_URL }}'
-      TESTENV_FLOW_URL: ${{ secrets.TESTENV_FLOW_URL }}
+
+    environment:
+      name: ${{ matrix.environment }}
 
     steps:
     - uses: actions/checkout@v2
@@ -30,6 +32,10 @@ jobs:
         pip install pipenv
         pipenv install --ignore-pipfile --dev
     - name: Run tests
+      env:
+        TESTENV_BROKER_URL: ${{ secrets.TESTENV_BROKER_URL }}
+        TESTENV_SO_URL: ${{ secrets.TESTENV_SO_URL }}'
+        TESTENV_FLOW_URL: ${{ secrets.TESTENV_FLOW_URL }}
       run: |
         pipenv run python setup.py install
         TESTENV_BROKER_URL=$TESTENV_BROKER_URL TESTENV_SO_URL=$TESTENV_SO_URL TESTENV_FLOW_URL=$TESTENV_FLOW_URL pipenv run pytest -s --cov=msb_client
