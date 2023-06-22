@@ -18,7 +18,7 @@ from .Function import Function
 from .DataFormat import getDataType
 
 
-class MsbClient(websocket.WebSocketApp):
+class MsbClient():
     """Definition of the msb client to handle the creation of the self-description
      and communication with the msb websocket interface.
     """
@@ -128,7 +128,7 @@ class MsbClient(websocket.WebSocketApp):
             except Exception:
                 pass
 
-    def on_message(self, message):
+    def on_message(self, ws, message):
         if self.sockJsFraming:
             if self.debug and message.startswith("h"):
                 logging.debug("♥")
@@ -205,10 +205,10 @@ class MsbClient(websocket.WebSocketApp):
                         self.changeConfigParameter(key, jmsg["params"][key])
                 self.reRegister()
 
-    def on_error(self, error):
+    def on_error(self, ws, error):
         logging.error(error)
 
-    def on_close(self, code, reason):
+    def on_close(self, ws, code, reason):
         logging.debug("DISCONNECTED")
         logging.debug("Websocket Close Status Code: (" + str(code) + "); Reason: (" + str(reason) + ")")
         self.connected = False
@@ -224,7 +224,7 @@ class MsbClient(websocket.WebSocketApp):
             logging.info("Start reconnecting to msb url: >" + self.msb_url + "<")
             self.connect(self.msb_url)
 
-    def on_open(self):
+    def on_open(self, ws):
         logging.debug("Socket open")
         self.connected = True
 
