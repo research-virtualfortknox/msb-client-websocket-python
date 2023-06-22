@@ -13,10 +13,10 @@ jobs:
         environment: ['MSB_1.5', 'MSB_1.6']
             
     env:
-      PYTHONWARNINGS: 'ignore:Unverified HTTPS request'
-      TESTENV_BROKER_URL: '${{ secrets.TESTENV_BROKER_URL }}'
-      TESTENV_SO_URL: '${{ secrets.TESTENV_SO_URL }}'
-      TESTENV_FLOW_URL: '${{ secrets.TESTENV_FLOW_URL }}'
+      PYTHONWARNINGS: ignore:Unverified HTTPS request
+      TESTENV_BROKER_URL: ${{ secrets.TESTENV_BROKER_URL }}
+      TESTENV_SO_URL: ${{ secrets.TESTENV_SO_URL }}'
+      TESTENV_FLOW_URL: ${{ secrets.TESTENV_FLOW_URL }}
 
     steps:
     - uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
     - name: Run tests
       run: |
         pipenv run python setup.py install
-        pipenv run pytest -s --cov=msb_client
+        TESTENV_BROKER_URL=$TESTENV_BROKER_URL TESTENV_SO_URL=$TESTENV_SO_URL TESTENV_FLOW_URL=$TESTENV_FLOW_URL pipenv run pytest -s --cov=msb_client
         pipenv run python setup.py sdist bdist_wheel
     - name: Coveralls Parallel
       uses: coverallsapp/github-action@v2
