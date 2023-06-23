@@ -19,9 +19,9 @@ First upgrade project to new version using
 bumpversion [ major | minor | patch ]
 ```
 
-## Publish Version Of Library (travis)
+## Publish Version Of Library (Github Action)
 
-Travis CI will automatically publish the project to PyPy registry if:
+Github Action will automatically publish the project to PyPy registry if:
 * project version was updated using `bumpversion`
 * new version commited
 * git `TAG` has beed created for commit
