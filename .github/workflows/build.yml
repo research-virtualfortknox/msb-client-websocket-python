@@ -67,7 +67,6 @@ jobs:
     - name: Coveralls Parallel
       uses: coverallsapp/github-action@v2
       with:
-        github-token: ${{ secrets.COVERALLS_TOKEN  }}
         flag-name: run-${{ matrix.python-version }}
         parallel: true
     - name: Deploy to PyPI
