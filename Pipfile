@@ -16,9 +16,9 @@ wheel = "*"
 twine = "*"
 
 [packages]
-jsonschema = "==4.17.3"
+jsonschema = ">=4.17.3"
 enum34 = "==1.1.10"
-websocket_client = "==1.6.0"
+websocket_client = ">=1.6.0"
 
 [requires]
 python_version = "3.8"

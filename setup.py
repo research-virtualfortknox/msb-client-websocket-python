@@ -47,8 +47,8 @@ setup(
     },
     include_package_data=True,
     install_requires=[
-        "websocket-client==0.57.0",
-        "jsonschema>=4.4.0",
+        "websocket-client>=1.6.0",
+        "jsonschema>=4.17.3",
         "enum34>=1.1.10",
     ],
     zip_safe=False,
