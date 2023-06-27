@@ -64,6 +64,9 @@ jobs:
         TESTENV_BROKER_URL=$TESTENV_BROKER_URL TESTENV_SO_URL=$TESTENV_SO_URL TESTENV_FLOW_URL=$TESTENV_FLOW_URL \
         pipenv run pytest -s --cov=msb_client
         pipenv run python setup.py sdist bdist_wheel
+    - name: Remove .egg files
+      run: |
+        rm dist/*.egg || true
     - name: Coveralls
       uses: coverallsapp/github-action@v2
     - name: Deploy to PyPI
