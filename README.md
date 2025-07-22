@@ -35,10 +35,11 @@ You can use this client to connect a python app to VFK MSB.
 
 ## Prerequisites
 
-* Setup [Python](https://www.python.org/downloads/) **version 3.8.x** 
-    * last client version supporting Python 2.7 is v1.0.8
-    * last client version supporting Python 3.6 is v1.0.11
-    * last client version supporting Python 3.7 is v1.0.13
+* Setup [Python](https://www.python.org/downloads/) **version 3.9.x**
+  * last client version supporting Python 2.7 is v1.0.8
+  * last client version supporting Python 3.6 is v1.0.11
+  * last client version supporting Python 3.7 is v1.0.13
+  * last client version supporting Python 3.8 is v1.0.15
 * MSB client installed using PyPi
 * Optional: Use pipenv to run your python app in a virtual environment to avoid dependency isssues with other apps
 
